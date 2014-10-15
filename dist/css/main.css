@@ -6292,7 +6292,7 @@ li.search:hover {
   background: #f5f5f5;
 }
 li.search .count {
-  float: left;
+  float: right;
   font-size: 45px;
   line-height: 60px;
   margin-right: .25em;
@@ -6340,7 +6340,7 @@ li.search p.query .title {
   padding-right: .5em;
 }
 li.search a.delete {
-  line-height: 3em;
+  line-height: 60px;
   float: right;
 }
 .in-place-edit .when-editing {
