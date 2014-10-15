@@ -1,6 +1,12 @@
 a.delete(href='#') Delete
 
-a.object.count(href="#")= nDocuments
+if nDocuments !== null
+  a.object.count(href="#")= nDocuments.toLocaleString()
+else
+  .object.count.spinner
+    .bounce1
+    .bounce2
+    .bounce3
 
 .in-place-edit.name
   .when-not-editing
