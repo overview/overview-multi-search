@@ -6,7 +6,6 @@ else
   a.object.count(href: "#")= nDocuments
   h5
     a.object(href: "#")= name
-  p.terms Search terms:
-  ul.terms
-    for term in terms
-      li.term= term
+  p.query
+    span.title Query:
+    span.query= query

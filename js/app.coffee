@@ -8,8 +8,6 @@ module.exports = class App extends Backbone.View
 
   initialize: (options) ->
     throw 'Must pass options.searches, a Searches Collection' if !options.searches
-    throw 'Must pass options.documentSetId, a Number' if !options.documentSetId
-    @documentSetId = options.documentSetId
     @searches = options.searches
     @children = {}
 
@@ -27,7 +25,7 @@ module.exports = class App extends Backbone.View
 
     @children =
       searchList: new SearchListView(collection: @searches)
-      searchForm: new SearchFormView(documentSetId: @documentSetId)
+      searchForm: new SearchFormView
 
     for k, view of @children
       view.render()
@@ -37,4 +35,5 @@ module.exports = class App extends Backbone.View
     @
 
   onCreate: (attributes) ->
-    @searches.create(attributes)
+    model = @searches.create(attributes)
+    model.startRefresh()

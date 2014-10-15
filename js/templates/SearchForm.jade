@@ -1,13 +1,7 @@
 form.new-search(action='#', method='post', role='form')
-  fieldset
-    legend Create a new search
-
-    .form-group
-      label(for='new-search-name') Search name
-      input.form-control#new-search-name(name='name', placeholder='A person, place or thing')
-
-    .form-group
-      label(for='new-search-terms') Search terms
-      input.form-control#new-search-terms(name='terms', placeholder='Search1, search2, search3')
-
-    button.btn.btn-primary(type='submit') Create search
+  .form-group
+    label.sr-only(for='new-search-name') Search for
+    .input-group
+      input.form-control#new-search-name(name='name', placeholder='Person, place, thing or action')
+      span.input-group-btn
+        button.btn.btn-primary(type='submit') Search

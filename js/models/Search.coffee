@@ -5,8 +5,21 @@ Backbone = require('backbone')
 module.exports = class Search extends Backbone.Model
   defaults:
     name: ''
-    terms: []
-    nDocuments: 0
+    query: ''
+    nDocuments: null
+    error: null
 
   parse: (json) -> _.extend({ id: json.id }, json.json)
-  toJSON: -> { json: @attributes }
+  toJSON: -> { json: _.omit(@attributes, 'id') }
+
+  startRefresh: ->
+    server = @collection.server
+    documentSetId = @collection.documentSetId
+    query = @get('query')
+
+    Backbone.ajax
+      url: "#{server}/api/v1/document-sets/#{documentSetId}/documents?fields=id&q=#{encodeURIComponent(query)}"
+      success: (ids) =>
+        @save(nDocuments: ids.length, error: null)
+      error: (err) =>
+        @save(nDocuments: null, error: err)

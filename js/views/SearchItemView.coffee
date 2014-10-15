@@ -8,12 +8,15 @@ module.exports = class SearchItemView extends Marionette.ItemView
     'click .delete': 'onDelete'
     'click a.object': 'onClick'
 
+  modelEvents:
+    change: 'render'
+
   onClick: (e) ->
     e.preventDefault()
     attrs = @model.attributes
     window.parent.postMessage({
       call: 'setDocumentListParams'
-      args: [ { q: encodeURIComponent(attrs.terms.join(' ')), name: attrs.name } ]
+      args: [ { q: encodeURIComponent(attrs.query), name: attrs.name } ]
     }, global.server)
 
   template: require('../templates/SearchItem')
@@ -22,8 +25,6 @@ module.exports = class SearchItemView extends Marionette.ItemView
 
   onDelete: (e) ->
     e.preventDefault()
-
-    console.log(e, @model)
 
     if window.confirm('Are you sure you want to delete this search?')
       @model.destroy()
