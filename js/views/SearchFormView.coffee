@@ -1,9 +1,9 @@
 Backbone = require('backbone')
 
-module.exports = class EntityFormView extends Backbone.View
-  className: 'new-entity'
+module.exports = class SearchFormView extends Backbone.View
+  className: 'new-search'
 
-  template: require('../templates/EntityForm')
+  template: require('../templates/SearchForm')
 
   events:
     'submit form': 'onSubmit'

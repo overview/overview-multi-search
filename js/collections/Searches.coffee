@@ -1,9 +1,9 @@
 _ = require('lodash')
 Backbone = require('backbone')
 
-module.exports = class Entities extends Backbone.Collection
+module.exports = class Searches extends Backbone.Collection
   comparator: 'name'
-  model: require('../models/Entity')
+  model: require('../models/Search')
   url: ->
     ret = "#{@server}/api/v1/vizs/#{@vizId}/objects"
     console.log(ret)

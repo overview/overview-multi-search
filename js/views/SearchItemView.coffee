@@ -1,8 +1,8 @@
 Marionette = require('backbone.marionette')
 
-module.exports = class EntityItemView extends Marionette.ItemView
+module.exports = class SearchItemView extends Marionette.ItemView
   tagName: 'li'
-  className: 'entity'
+  className: 'search'
 
   events:
     'click .delete': 'onDelete'
@@ -16,7 +16,7 @@ module.exports = class EntityItemView extends Marionette.ItemView
       args: [ { q: encodeURIComponent(attrs.terms.join(' ')), name: attrs.name } ]
     }, global.server)
 
-  template: require('../templates/EntityItem')
+  template: require('../templates/SearchItem')
 
   serializeData: -> @model.attributes
 
@@ -25,5 +25,5 @@ module.exports = class EntityItemView extends Marionette.ItemView
 
     console.log(e, @model)
 
-    if window.confirm('Are you sure you want to delete this entity?')
+    if window.confirm('Are you sure you want to delete this search?')
       @model.destroy()

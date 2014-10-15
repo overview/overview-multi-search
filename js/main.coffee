@@ -2,7 +2,7 @@ Backbone = require('backbone')
 $ = Backbone.$ = require('jquery')
 
 App = require('./app')
-Entities = require('./collections/Entities')
+Searches = require('./collections/Searches')
 
 queryString = (->
   map = {}
@@ -25,14 +25,14 @@ $.ajaxSetup
 global.server = queryString.server
 
 $ ->
-  entities = new Entities([], {
+  searches = new Searches([], {
     server: queryString.server
     vizId: queryString.vizId
   })
-  entities.fetch()
+  searches.fetch()
 
   app = new App
     el: $('#app')[0]
-    entities: entities
+    searches: searches
     documentSetId: queryString.documentSetId
   app.render()
