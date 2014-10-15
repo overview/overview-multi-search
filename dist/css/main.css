@@ -6293,15 +6293,40 @@ li.search:hover {
 }
 li.search .count {
   float: left;
-  font-size: 3em;
-  line-height: 1;
+  font-size: 45px;
+  line-height: 60px;
   margin-right: .25em;
 }
-li.search h5 {
+li.search div.name h5 {
+  display: inline;
   font-size: 1em;
   font-weight: bold;
   line-height: inherit;
-  margin: 0;
+  padding-right: .5em;
+}
+li.search div.query span.title {
+  color: #777777;
+  padding-right: .25em;
+}
+li.search div.query span.query {
+  padding-right: .5em;
+}
+li.search div.name,
+li.search div.query {
+  min-height: 30px;
+  line-height: 30px;
+}
+li.search div.name .form-group,
+li.search div.query .form-group {
+  margin-bottom: 0;
+}
+li.search div.name a.edit,
+li.search div.query a.edit {
+  opacity: .5;
+}
+li.search div.name a.edit:hover,
+li.search div.query a.edit:hover {
+  opacity: 1;
 }
 li.search .invalid {
   color: #777777;
@@ -6317,4 +6342,13 @@ li.search p.query .title {
 li.search a.delete {
   line-height: 3em;
   float: right;
+}
+.in-place-edit .when-editing {
+  display: none;
+}
+.in-place-edit.editing .when-not-editing {
+  display: none;
+}
+.in-place-edit.editing .when-editing {
+  display: block;
 }

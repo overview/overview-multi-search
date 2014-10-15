@@ -17,8 +17,10 @@ module.exports = class Search extends Backbone.Model
     documentSetId = @collection.documentSetId
     query = @get('query')
 
+    url = "#{server}/api/v1/document-sets/#{documentSetId}/documents?fields=id&q=#{encodeURIComponent(query)}"
+
     Backbone.ajax
-      url: "#{server}/api/v1/document-sets/#{documentSetId}/documents?fields=id&q=#{encodeURIComponent(query)}"
+      url: url
       success: (ids) =>
         @save(nDocuments: ids.length, error: null)
       error: (err) =>

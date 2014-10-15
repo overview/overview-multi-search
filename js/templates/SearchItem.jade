@@ -1,11 +1,34 @@
 a.delete(href='#') Delete
 
-if !name
-  .invalid [Invalid search]
-else
-  a.object.count(href: "#")= nDocuments
-  h5
-    a.object(href: "#")= name
-  p.query
+a.object.count(href: "#")= nDocuments
+
+.in-place-edit.name
+  .when-not-editing
+    h5
+      a.object(href='#')= name
+    a.edit(href='#') rename
+  .when-editing
+    form.edit-search-name(action='#', method='post', role='form')
+      .form-group
+        label.sr-only(for='search-#{id}-name') Name
+        .input-group.input-group-sm
+          input.form-control(id='search-#{id}-name', name='name', value=name, required=true)
+          span.input-group-btn
+            button.btn.btn-primary(type='submit') Save
+            button.btn.btn-default(type='reset') Cancel
+
+.in-place-edit.query
+  .when-not-editing
     span.title Query:
     span.query= query
+    a.edit(href='#') change
+  .when-editing
+    form.edit-search-query(action='#', method='post', role='form')
+      .form-group
+        label.sr-only(for="search-#{id}-query") Query
+        .input-group.input-group-sm
+          input.form-control(name='query', value=query, placeholder='query terms', required=true)
+          span.input-group-btn
+            button.btn.btn-primary(type='submit') Search
+            button.btn.btn-default(type='reset') Cancel
+        p.help-block e.g., “<tt>criminal OR justice</tt>”; <a target="_blank" href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax">more query syntax</a> (opens in new tab)
