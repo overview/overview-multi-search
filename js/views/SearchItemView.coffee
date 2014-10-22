@@ -27,7 +27,7 @@ module.exports = class SearchItemView extends Marionette.ItemView
     attrs = @model.attributes
     window.parent.postMessage({
       call: 'setDocumentListParams'
-      args: [ { q: encodeURIComponent(attrs.query), name: attrs.name } ]
+      args: [ { q: attrs.query, name: attrs.name } ]
     }, global.server)
 
   onEditName: (e) ->
