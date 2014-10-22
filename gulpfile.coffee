@@ -48,6 +48,10 @@ startBrowserify = (watch) ->
   bundler.transform(browserifyJade.jade({
     pretty: false
   }))
+  bundler.plugin 'minifyify',
+    map: 'main.js.map.json'
+    compressPath: process.cwd()
+    output: 'dist/js/main.js.map.json'
 
   rebundle = ->
     bundler.bundle()
