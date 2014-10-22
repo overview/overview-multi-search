@@ -3,6 +3,7 @@ gutil = require('gulp-util')
 jade = require('gulp-jade')
 less = require('gulp-less')
 plumber = require('gulp-plumber')
+rename = require('gulp-rename')
 rimraf = require('gulp-rimraf')
 source = require('vinyl-source-stream')
 supervisor = require('gulp-supervisor')
@@ -10,6 +11,27 @@ supervisor = require('gulp-supervisor')
 browserify = require('browserify')
 watchify = require('watchify')
 browserifyJade = require('browserify-jade')
+
+uploadToAws = (done) ->
+  s3 = require('s3')
+  client = s3.createClient()
+  upload = client.uploadDir
+    localDir: 'dist'
+    deleteRemoved: true
+    s3Params:
+      Bucket: 'overview-multi-search'
+      Prefix: ''
+      ACL: 'public-read'
+    getS3Params: (localFile, stat, callback) ->
+      if localFile in [ 'dist/show', 'dist/metadata' ]
+        callback(null, ContentType: 'text/html')
+      else
+        callback(null, {})
+  upload.on 'error', (err) ->
+    console.error("Unable to upload: ", err.stack)
+  upload.on 'progress', ->
+    console.log('progress', upload.progressAmount, upload.progressTotal)
+  upload.on('end', done)
 
 startBrowserify = (watch) ->
   options =
@@ -20,7 +42,8 @@ startBrowserify = (watch) ->
     extensions: [ '.coffee', '.js', '.json', '.jade' ]
     debug: true # enable source maps
 
-  bundler = watchify(browserify(options))
+  bundler = browserify(options)
+  bundler = watchify(bundler) if watch
   bundler.transform('coffeeify')
   bundler.transform(browserifyJade.jade({
     pretty: false
@@ -73,6 +96,7 @@ doJade = ->
     .pipe(jade({
       pretty: true
     }))
+    .pipe(rename((path) -> path.extname = '')) # remove ".html", so we don't need redirects
     .pipe(gulp.dest('dist'))
 gulp.task('jade', [ 'clean' ], doJade)
 gulp.task('jade-noclean', doJade)
@@ -88,3 +112,8 @@ gulp.task 'server', ->
   })
 
 gulp.task 'default', [ 'watch', 'server' ]
+
+gulp.task 'prod', [ 'css', 'js', 'jade', 'public' ]
+
+gulp.task 'deploy', [ 'prod' ], (done) ->
+  uploadToAws(done)
