@@ -2,7 +2,7 @@ _ = require('lodash')
 Backbone = require('backbone')
 
 module.exports = class Searches extends Backbone.Collection
-  comparator: 'name'
+  comparator: (x) -> x.attributes.name.toLowerCase()
   model: require('../models/Search')
   url: -> "#{@server}/api/v1/store/objects"
 
