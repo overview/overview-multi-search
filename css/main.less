@@ -7,8 +7,10 @@ ul.searches {
 li.search {
   clear: both;
   position: relative;
-  line-height: 1.5;
-  margin: .5em;
+  padding: .25em 0;
+
+  &.editing > .when-not-editing { display: none; }
+  &:not(.editing) > .when-editing { display: none; }
 
   &:hover {
     background: @table-bg-hover;
@@ -21,13 +23,15 @@ li.search {
     margin-right: .25em;
   }
 
-  div.name {
-    h5 {
-      display: inline;
-      font-size: 1em;
-      font-weight: bold;
-      line-height: inherit;
-      padding-right: .5em;
+  h5 {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: inherit;
+    padding-right: .5em;
+    margin: 0;
+
+    a {
+      display: block; // so the whole thing is a link
     }
   }
 
@@ -68,9 +72,13 @@ li.search {
     }
   }
 
-  a.delete {
-    line-height: 2 * @input-height-small;
+  .actions {
+    line-height: @input-height-small;
     float: right;
+
+    a {
+      display: block;
+    }
   }
 }
 

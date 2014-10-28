@@ -6285,8 +6285,13 @@ ul.searches {
 li.search {
   clear: both;
   position: relative;
-  line-height: 1.5;
-  margin: .5em;
+  padding: .25em 0;
+}
+li.search.editing > .when-not-editing {
+  display: none;
+}
+li.search:not(.editing) > .when-editing {
+  display: none;
 }
 li.search:hover {
   background: #f5f5f5;
@@ -6297,12 +6302,15 @@ li.search .count {
   line-height: 60px;
   margin-right: .25em;
 }
-li.search div.name h5 {
-  display: inline;
+li.search h5 {
   font-size: 1em;
   font-weight: bold;
   line-height: inherit;
   padding-right: .5em;
+  margin: 0;
+}
+li.search h5 a {
+  display: block;
 }
 li.search div.query span.title {
   color: #777777;
@@ -6339,9 +6347,12 @@ li.search p.query .title {
   color: #777777;
   padding-right: .5em;
 }
-li.search a.delete {
-  line-height: 60px;
+li.search .actions {
+  line-height: 30px;
   float: right;
+}
+li.search .actions a {
+  display: block;
 }
 .in-place-edit .when-editing {
   display: none;

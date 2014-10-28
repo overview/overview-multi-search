@@ -7,13 +7,10 @@ module.exports = class SearchItemView extends Marionette.ItemView
 
   events:
     'click .delete': 'onDelete'
+    'click .edit': 'onEdit'
     'click a.object': 'onClick'
-    'click .in-place-edit.name a.edit': 'onEditName'
-    'click .in-place-edit.query a.edit': 'onEditQuery'
-    'submit form.edit-search-name': 'onSubmitName'
-    'reset form.edit-search-name': 'onResetName'
-    'submit form.edit-search-query': 'onSubmitQuery'
-    'reset form.edit-search-query': 'onResetQuery'
+    'submit form': 'onSubmit'
+    'reset form': 'onReset'
 
   modelEvents:
     change: 'render'
@@ -30,31 +27,22 @@ module.exports = class SearchItemView extends Marionette.ItemView
       args: [ { q: attrs.query, name: attrs.name } ]
     }, global.server)
 
-  onEditName: (e) ->
-    e.preventDefault()
-    $(e.target).closest('.in-place-edit').addClass('editing')
+  setEditing: (editing) -> @$el.toggleClass('editing', editing)
 
-  onEditQuery: (e) ->
-    e.preventDefault()
-    $(e.target).closest('.in-place-edit').addClass('editing')
+  onEdit: (e) -> @setEditing(true)
 
-  onSubmitName: (e) ->
+  onSubmit: (e) ->
     e.preventDefault()
-    name = @ui.name.val()
-    if name
-      @model.save(name: name)
-    $(e.target).closest('.in-place-edit').removeClass('editing')
-
-  onSubmitQuery: (e) ->
-    e.preventDefault()
-    query = @ui.query.val()
-    if query
-      @model.save { query: query, nDocuments: null, error: null },
+    name = @ui.name.val().trim()
+    query = @ui.query.val().trim()
+    if name && query
+      @model.save { name: name, query: query, nDocuments: null, error: null },
         success: (model) -> model.startRefresh()
-    $(e.target).closest('.in-place-edit').removeClass('editing')
+    @setEditing(false)
 
-  onResetName: (e) -> $(e.target).closest('.in-place-edit').removeClass('editing')
-  onResetQuery: (e) -> $(e.target).closest('.in-place-edit').removeClass('editing')
+  onReset: (e) ->
+    # do not e.preventDefault() -- we want to reset the form
+    @setEditing(false)
 
   template: require('../templates/SearchItem')
 

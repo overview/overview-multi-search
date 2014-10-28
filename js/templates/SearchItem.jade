@@ -1,40 +1,39 @@
-a.delete(href='#') Delete
+.when-not-editing
+  .actions
+    a.edit(href='#') Edit
+    a.delete(href='#') Delete
 
-if nDocuments !== null
-  a.object.count(href="#")= nDocuments.toLocaleString()
-else
-  .object.count.spinner
-    .bounce1
-    .bounce2
-    .bounce3
+  if nDocuments !== null
+    a.object.count(href="#")= nDocuments.toLocaleString()
+  else
+    .object.count.spinner
+      .bounce1
+      .bounce2
+      .bounce3
 
-.in-place-edit.name
-  .when-not-editing
+  .name
     h5
       a.object(href='#')= name
-    a.edit(href='#') rename
-  .when-editing
-    form.edit-search-name(action='#', method='post', role='form')
-      .form-group
-        label.sr-only(for='search-#{id}-name') Name
-        .input-group.input-group-sm
-          input.form-control(id='search-#{id}-name', name='name', value=name, required=true)
-          span.input-group-btn
-            button.btn.btn-primary(type='submit') Save
-            button.btn.btn-default(type='reset') Cancel
 
-.in-place-edit.query
-  .when-not-editing
+  .query
     span.title Query:
     span.query= query
-    a.edit(href='#') change
-  .when-editing
-    form.edit-search-query(action='#', method='post', role='form')
-      .form-group
-        label.sr-only(for="search-#{id}-query") Query
-        .input-group.input-group-sm
-          input.form-control(name='query', value=query, placeholder='query terms', required=true)
-          span.input-group-btn
-            button.btn.btn-primary(type='submit') Search
-            button.btn.btn-default(type='reset') Cancel
-        p.help-block e.g., “<tt>criminal OR justice</tt>”; <a target="_blank" href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax">more query syntax</a> (opens in new tab)
+
+.when-editing
+  form.form-horizontal(action='#', method='post', role='form')
+    fieldset
+      legend.col-sm-offset-2.col-sm-10
+        h5 Edit search
+      .form-group.form-group-sm
+        label.col-sm-2.control-label(for='search-#{id}-name') Name
+        .col-sm-10
+          input.form-control(id='search-#{id}-name', name='name', value=name, required=true)
+      .form-group.form-group-sm
+        label.col-sm-2.control-label(for="search-#{id}-query") Query
+        .col-sm-10
+          input.form-control(id='search-#{id}-query', name='query', value=query, placeholder='query terms', required=true)
+          p.help-block e.g., <tt>criminal OR justice</tt>; <a target="_blank" href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax">more query syntax</a> (opens in new tab)
+      .form-group.form-group-sm
+        .col-sm-offset-2.col-sm-10.btn-group
+          button.btn.btn-primary(type='submit') Save
+          button.btn.btn-default(type='reset') Cancel
