@@ -1,7 +1,6 @@
 Backbone = require('backbone')
 SearchListView = require('./views/SearchListView')
 SearchFormView = require('./views/SearchFormView')
-VizView = require('./views/VizView')
 
 module.exports = class App extends Backbone.View
   template: require('./templates/app')
