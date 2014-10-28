@@ -28,7 +28,6 @@ $ ->
   searches = new Searches([], {
     server: queryString.server
     documentSetId: queryString.documentSetId
-    vizId: queryString.vizId
   })
   searches.fetch()
 
