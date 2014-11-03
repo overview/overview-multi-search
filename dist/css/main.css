@@ -6278,6 +6278,12 @@ button.close {
     display: none !important;
   }
 }
+html,
+body,
+.container,
+#app {
+  height: 100%;
+}
 ul.searches {
   padding-left: 0;
   list-style: none;
@@ -6354,14 +6360,34 @@ li.search .actions {
 li.search .actions a {
   display: block;
 }
-.in-place-edit .when-editing {
-  display: none;
+div.source {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 2;
 }
-.in-place-edit.editing .when-not-editing {
-  display: none;
+div.source form {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  margin: 0;
+  box-sizing: border-box;
+  height: 100%;
 }
-.in-place-edit.editing .when-editing {
-  display: block;
+div.source form blockquote {
+  border-color: #ddd;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+div.source .help-text {
+  color: #777777;
 }
 .spinner > div {
   width: 18px;

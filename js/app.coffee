@@ -1,9 +1,13 @@
 Backbone = require('backbone')
 SearchListView = require('./views/SearchListView')
 SearchFormView = require('./views/SearchFormView')
+SourceView = require('./views/SourceView')
 
 module.exports = class App extends Backbone.View
   template: require('./templates/app')
+
+  events:
+    'click a.edit-source': 'onEditSource'
 
   initialize: (options) ->
     throw 'Must pass options.searches, a Searches Collection' if !options.searches
@@ -20,7 +24,6 @@ module.exports = class App extends Backbone.View
     @ui =
       searchList: @$('.search-list')
       searchForm: @$('.search-form')
-      documentList: @$('.document-list')
 
     @children =
       searchList: new SearchListView(collection: @searches)
@@ -36,3 +39,11 @@ module.exports = class App extends Backbone.View
   onCreate: (attributes) ->
     model = @searches.create(attributes)
     model.startRefresh()
+
+  onEditSource: (e) ->
+    e.preventDefault()
+
+    sourceView = new SourceView(collection: @searches)
+    @listenTo(sourceView, 'done', -> sourceView.remove())
+    sourceView.render()
+    @$el.append(sourceView.el)

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "Saves and organizes searches within an Overview document set",
   "scripts": {
-    "start": "node_modules/coffee-script/bin/coffee app/main.coffee"
+    "start": "node_modules/coffee-script/bin/coffee app/main.coffee",
+    "test": "node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,9 @@
     "backbone.marionette": "^2.1.0",
     "browserify": "^5.9.1",
     "browserify-jade": "^0.1.1",
+    "chai": "^1.9.2",
     "coffeeify": "^0.7.0",
+    "csv": "^0.4.1",
     "gulp": "^3.8.7",
     "gulp-jade": "^0.7.0",
     "gulp-less": "^1.3.3",
@@ -36,6 +39,8 @@
     "minifyify": "^4.4.0",
     "mocha": "^1.21.3",
     "s3": "^4.3.1",
+    "sinon": "^1.11.1",
+    "sinon-chai": "^2.6.0",
     "supervisor": "^0.6.0",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^1.0.1"

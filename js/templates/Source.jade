@@ -1,0 +1,9 @@
+form.source(action='#', method='post', role='form')
+  .form-group
+    label(for='source-source') Edit searches as comma-separated values
+    textarea.form-control#source-source(name='source', rows=10)= source
+    p.help-text The first value is "name" and the second value is "query". For instance, one line could be <tt>Music,music OR sound</tt>.
+    p.help-text If you only enter one column, it will be both "name" and "query".
+    p.help-text <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank">More query syntax</a> (opens in new window)
+  button.btn.btn-primary(type='submit') Use this CSV
+  button.btn.btn-default(type='reset') Cancel
