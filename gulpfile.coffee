@@ -43,15 +43,10 @@ startBrowserify = (watch) ->
     debug: true # enable source maps
 
   bundler = browserify(options)
-  bundler = watchify(bundler) if watch
   bundler.transform('coffeeify')
   bundler.transform(browserifyJade.jade({
     pretty: false
   }))
-  bundler.plugin 'minifyify',
-    map: 'main.js.map.json'
-    compressPath: process.cwd()
-    output: 'dist/js/main.js.map.json'
 
   rebundle = ->
     bundler.bundle()
@@ -60,7 +55,13 @@ startBrowserify = (watch) ->
       .pipe(gulp.dest('dist/js'))
 
   if watch
+    bundler = watchify(bundler)
     bundler.on('update', rebundle)
+  else
+    bundler.plugin 'minifyify',
+      map: 'main.js.map.json'
+      compressPath: process.cwd()
+      output: 'dist/js/main.js.map.json'
 
   rebundle()
 
