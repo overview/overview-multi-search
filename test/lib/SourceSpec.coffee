@@ -34,6 +34,8 @@ describe 'Source', ->
       test('foo,"bar,baz"', [{ name: 'foo', query: 'bar,baz' }], 'parse a comma')
       test('foo,"bar\nbaz"', [{ name: 'foo', query: 'bar\nbaz' }], 'parse a newline')
       test('foo,"bar""baz"', [{ name: 'foo', query: 'bar"baz' }], 'parse a quote')
+      test('foo', [{ name: 'foo', query: 'foo' }], 'default name to query')
+      test('foo bar', [{ name: 'foo bar', query: '"foo bar"' }], 'default name to quoted query when query contains non-[a-zA-Z0-9_]')
 
       it 'should return error on unclosed quote', (done) ->
         @subject.parse 'foo,bar\nfoo,"bar\nbar,baz', (err, result) ->
