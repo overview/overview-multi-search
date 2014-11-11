@@ -6013,7 +6013,9 @@ button.close {
 .panel-body:before,
 .panel-body:after,
 .modal-footer:before,
-.modal-footer:after {
+.modal-footer:after,
+div.main:before,
+div.main:after {
   content: " ";
   display: table;
 }
@@ -6031,7 +6033,8 @@ button.close {
 .navbar-collapse:after,
 .pager:after,
 .panel-body:after,
-.modal-footer:after {
+.modal-footer:after,
+div.main:after {
   clear: both;
 }
 .center-block {
@@ -6368,6 +6371,44 @@ li.search .actions {
 }
 li.search .actions a {
   display: block;
+}
+div.main {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+}
+@media (min-width: 768px) {
+  div.main {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  div.main {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  div.main {
+    width: 1170px;
+  }
+}
+div.main > .navbar-header,
+div.main > .navbar-collapse {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+@media (min-width: 768px) {
+  div.main > .navbar-header,
+  div.main > .navbar-collapse {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 div.source {
   position: absolute;
