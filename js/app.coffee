@@ -1,5 +1,6 @@
 Backbone = require('backbone')
 SearchListView = require('./views/SearchListView')
+SearchListHeaderView = require('./views/SearchListHeaderView')
 SearchFormView = require('./views/SearchFormView')
 SourceView = require('./views/SourceView')
 
@@ -22,10 +23,12 @@ module.exports = class App extends Backbone.View
     @clearChildren()
     @$el.html(@template())
     @ui =
+      searchListHeader: @$('.search-list-header')
       searchList: @$('.search-list')
       searchForm: @$('.search-form')
 
     @children =
+      searchListHeader: new SearchListHeaderView(collection: @searches)
       searchList: new SearchListView(collection: @searches)
       searchForm: new SearchFormView
 

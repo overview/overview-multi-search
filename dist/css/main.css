@@ -6287,6 +6287,57 @@ body,
 #app {
   height: 100%;
 }
+.search-list-header {
+  position: relative;
+  line-height: 1.5;
+  margin-right: -15px;
+}
+.search-list-header .sort[data-n-searches="0"] {
+  display: none;
+}
+.search-list-header a {
+  width: 5em;
+  display: none;
+  opacity: .5;
+}
+.search-list-header a::before {
+  content: "​";
+  vertical-align: text-bottom;
+}
+.search-list-header a.sort-by-n-documents {
+  position: absolute;
+  top: 0;
+  right: 5em;
+  text-align: right;
+}
+.search-list-header .sort.sort-by-n-documents-desc a.sort-by-n-documents-asc::before {
+  content: "▾ ";
+}
+.search-list-header .sort.sort-by-n-documents-desc a.sort-by-n-documents-asc,
+.search-list-header .sort.sort-by-n-documents-desc a.sort-by-name-asc {
+  display: block;
+}
+.search-list-header .sort.sort-by-n-documents-asc a.sort-by-n-documents-desc::before {
+  content: "▴ ";
+}
+.search-list-header .sort.sort-by-n-documents-asc a.sort-by-n-documents-desc,
+.search-list-header .sort.sort-by-n-documents-asc a.sort-by-name-asc {
+  display: block;
+}
+.search-list-header .sort.sort-by-name-asc a.sort-by-name-desc::before {
+  content: "▴ ";
+}
+.search-list-header .sort.sort-by-name-asc a.sort-by-name-desc,
+.search-list-header .sort.sort-by-name-asc a.sort-by-n-documents-desc {
+  display: block;
+}
+.search-list-header .sort.sort-by-name-desc a.sort-by-name-asc::before {
+  content: "▾ ";
+}
+.search-list-header .sort.sort-by-name-desc a.sort-by-name-asc,
+.search-list-header .sort.sort-by-name-desc a.sort-by-n-documents-desc {
+  display: block;
+}
 ul.searches {
   padding-left: 0;
   list-style: none;
@@ -6311,7 +6362,6 @@ li.search .count {
   float: right;
   font-size: 3em;
   line-height: 1;
-  margin-right: .5em;
 }
 li.search span.error {
   text-align: right;
@@ -6345,6 +6395,7 @@ li.search div.actions {
   line-height: 1.76470588;
   float: right;
   margin-right: -15px;
+  width: 5.88235294em;
 }
 li.search div.actions a {
   padding: 0 15px;

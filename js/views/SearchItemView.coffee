@@ -24,7 +24,7 @@ module.exports = class SearchItemView extends Marionette.ItemView
     attrs = @model.attributes
     window.parent.postMessage({
       call: 'setDocumentListParams'
-      args: [ { q: attrs.query, name: attrs.name } ]
+      args: [ { q: attrs.query, name: "in search “#{attrs.name}”" } ]
     }, global.server)
 
   setEditing: (editing) -> @$el.toggleClass('editing', editing)
