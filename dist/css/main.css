@@ -6308,6 +6308,15 @@ li.search .count {
   line-height: 60px;
   margin-right: .25em;
 }
+li.search span.error {
+  color: #d9534f;
+  float: right;
+  font-size: 12px;
+  line-height: 15px;
+  margin-right: .9375em;
+  margin-top: 15px;
+  max-width: 20em;
+}
 li.search h5 {
   font-size: 1em;
   font-weight: bold;

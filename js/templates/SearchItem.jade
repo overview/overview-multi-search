@@ -5,6 +5,8 @@
 
   if nDocuments !== null
     a.object.count(href="#")= nDocuments.toLocaleString()
+  else if error !== null
+    span.error= error.message
   else
     .object.count.spinner
       .bounce1

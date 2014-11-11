@@ -23,5 +23,5 @@ module.exports = class Search extends Backbone.Model
       url: url
       success: (ids) =>
         @save(nDocuments: ids.length, error: null)
-      error: (err) =>
-        @save(nDocuments: null, error: err)
+      error: (xhr) =>
+        @save(nDocuments: null, error: xhr.responseJSON)
