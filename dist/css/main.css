@@ -6294,7 +6294,9 @@ ul.searches {
 li.search {
   clear: both;
   position: relative;
-  padding: .25em 0;
+  padding: 0.75em 15px;
+  margin: 0 -15px;
+  line-height: 1.5;
 }
 li.search.editing > .when-not-editing {
   display: none;
@@ -6307,70 +6309,51 @@ li.search:hover {
 }
 li.search .count {
   float: right;
-  font-size: 45px;
-  line-height: 60px;
-  margin-right: .25em;
+  font-size: 3em;
+  line-height: 1;
+  margin-right: .5em;
 }
 li.search span.error {
+  text-align: right;
   color: #d9534f;
   float: right;
-  font-size: 12px;
-  line-height: 15px;
-  margin-right: .9375em;
-  margin-top: 15px;
-  max-width: 20em;
+  font-size: .85em;
+  line-height: 1.76470588;
+  margin-right: 1.76470588em;
+  max-width: 25em;
 }
 li.search h5 {
-  font-size: 1em;
+  font-size: 1.25em;
+  line-height: 1.2;
   font-weight: bold;
-  line-height: inherit;
-  padding-right: .5em;
+  padding: 0;
   margin: 0;
 }
 li.search h5 a {
   display: block;
 }
+li.search div.query {
+  color: #aaa;
+  font-size: .85em;
+  line-height: 1.76470588;
+}
 li.search div.query span.title {
-  color: #777777;
   padding-right: .25em;
 }
-li.search div.query span.query {
-  padding-right: .5em;
+li.search div.actions {
+  font-size: .85em;
+  line-height: 1.76470588;
+  float: right;
+  margin-right: -15px;
 }
-li.search div.name,
-li.search div.query {
-  min-height: 30px;
-  line-height: 30px;
-}
-li.search div.name .form-group,
-li.search div.query .form-group {
-  margin-bottom: 0;
-}
-li.search div.name a.edit,
-li.search div.query a.edit {
+li.search div.actions a {
+  padding: 0 15px;
+  display: block;
+  text-align: right;
   opacity: .5;
 }
-li.search div.name a.edit:hover,
-li.search div.query a.edit:hover {
+li.search div.actions a:hover {
   opacity: 1;
-}
-li.search .invalid {
-  color: #777777;
-  line-height: 3em;
-}
-li.search p.query {
-  margin: 0 .5em 0 0;
-}
-li.search p.query .title {
-  color: #777777;
-  padding-right: .5em;
-}
-li.search .actions {
-  line-height: 30px;
-  float: right;
-}
-li.search .actions a {
-  display: block;
 }
 div.main {
   margin-right: auto;

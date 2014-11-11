@@ -11,7 +11,9 @@ ul.searches {
 li.search {
   clear: both;
   position: relative;
-  padding: .25em 0;
+  padding: .75em (@grid-gutter-width / 2);
+  margin: 0 (@grid-gutter-width / -2);
+  line-height: 1.5;
 
   &.editing > .when-not-editing { display: none; }
   &:not(.editing) > .when-editing { display: none; }
@@ -22,26 +24,26 @@ li.search {
 
   .count {
     float: right;
-    font-size: 1.5 * @input-height-small;
-    line-height: 2 * @input-height-small;
-    margin-right: .25em;
+    font-size: 3em;
+    line-height: 1;
+    margin-right: .5em;
   }
 
   span.error {
+    text-align: right;
     color: @brand-danger;
     float: right;
-    font-size: .4 * @input-height-small;
-    line-height: .5 * @input-height-small;
-    margin-right: .9375em;
-    margin-top: .5 * @input-height-small;
-    max-width: 20em;
+    font-size: .85em;
+    line-height: 1.5 / .85;
+    margin-right: 1.5em / .85;
+    max-width: 25em;
   }
 
   h5 {
-    font-size: 1em;
+    font-size: 1.25em;
+    line-height: 1.2;
     font-weight: bold;
-    line-height: inherit;
-    padding-right: .5em;
+    padding: 0;
     margin: 0;
 
     a {
@@ -50,48 +52,30 @@ li.search {
   }
 
   div.query {
+    color: #aaa;
+    font-size: .85em;
+    line-height: 1.5 / .85;
+
     span.title {
-      .text-muted();
       padding-right: .25em;
     }
-
-    span.query {
-      padding-right: .5em;
-    }
   }
 
-  div.name, div.query {
-    min-height: @input-height-small;
-    line-height: @input-height-small;
-
-    .form-group { margin-bottom: 0; }
-
-    a.edit {
-      opacity: .5;
-      &:hover { opacity: 1; }
-    }
-  }
-
-  .invalid {
-    .text-muted();
-    line-height: 3em;
-  }
-
-  p.query {
-    margin: 0 .5em 0 0;
-
-    .title {
-      .text-muted();
-      padding-right: .5em;
-    }
-  }
-
-  .actions {
-    line-height: @input-height-small;
+  div.actions {
+    font-size: .85em;
+    line-height: 1.5 / .85;
     float: right;
+    margin-right: -@grid-gutter-width / 2;
 
     a {
+      padding: 0 @grid-gutter-width / 2;
       display: block;
+      text-align: right;
+      opacity: .5;
+    }
+
+    a:hover {
+      opacity: 1;
     }
   }
 }
