@@ -44,8 +44,8 @@ module.exports = class App extends Backbone.View
     for k, view of @children
       view.render()
 
-    ui.searchList.append(@children.searchListFiltersHeader.el)
     ui.searchList.append(@children.searchListFilters.el)
+    ui.searchList.append(@children.searchListFiltersHeader.el)
     ui.searchList.append(@children.searchListSort.el)
     ui.searchList.append(@children.searchList.el)
     ui.searchForm.append(@children.searchForm)

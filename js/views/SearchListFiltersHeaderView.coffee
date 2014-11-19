@@ -12,8 +12,8 @@ module.exports = class SearchListFiltersHeaderView extends Backbone.View
   render: ->
     if @collection.length > 0
       if @collection.length == 1
-        @$el.text("This top search also filters all the lower ones:")
+        @$el.text("The searches below only count the documents the above search found.")
       else
-        @$el.text("These top searches also filter the lower ones:")
+        @$el.text("The searches below only count the documents the above searches found.")
         
     @$el.toggleClass('filters-exist', @collection.length > 0)
