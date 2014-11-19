@@ -48,7 +48,7 @@ module.exports = class App extends Backbone.View
     ui.searchList.append(@children.searchListFiltersHeader.el)
     ui.searchList.append(@children.searchListSort.el)
     ui.searchList.append(@children.searchList.el)
-    ui.searchForm.append(@children.searchForm)
+    ui.searchForm.append(@children.searchForm.el)
 
     @listenTo(@children.searchForm, 'create', @onCreate)
     @listenTo(@children.searchList, 'childview:add-filter', @_onAddFilter)
