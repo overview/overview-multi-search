@@ -42,7 +42,7 @@ module.exports = class Search extends Backbone.Model
     if @get('filter')
       "#{@get('filter')} AND (#{@get('query')})"
     else
-      query
+      @get('query')
 
   ###
   Tries to get a number of documents from the server.
