@@ -41,12 +41,12 @@ module.exports = class SourceView extends Backbone.View
             toKeep[model.cid] = null
             if model.get('query') != item.query
               model.save(query: item.query)
-              model.startRefresh()
+              model.refreshIfNeeded()
             else
               # no changes; do nothing
           else
             model = @collection.create(item)
-            model.startRefresh()
+            model.refreshIfNeeded()
             toKeep[model.cid] = null
         for model in @collection.models.slice()
           model.destroy() if model.cid not of toKeep

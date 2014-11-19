@@ -1,6 +1,9 @@
 Backbone = require('backbone')
+SearchList = require('./models/SearchList')
+SearchListFiltersHeaderView = require('./views/SearchListFiltersHeaderView')
+SearchListFiltersView = require('./views/SearchListFiltersView')
+SearchListSortView = require('./views/SearchListSortView')
 SearchListView = require('./views/SearchListView')
-SearchListHeaderView = require('./views/SearchListHeaderView')
 SearchFormView = require('./views/SearchFormView')
 SourceView = require('./views/SourceView')
 
@@ -13,6 +16,10 @@ module.exports = class App extends Backbone.View
   initialize: (options) ->
     throw 'Must pass options.searches, a Searches Collection' if !options.searches
     @searches = options.searches
+    @searchList = new SearchList({}, searches: @searches)
+
+    @searches.on('change:query change:filter', (s) -> s.refreshIfNeeded())
+    @searches.each((s) -> s.refreshIfNeeded())
     @children = {}
 
   clearChildren: ->
@@ -22,26 +29,35 @@ module.exports = class App extends Backbone.View
   render: ->
     @clearChildren()
     @$el.html(@template())
-    @ui =
-      searchListHeader: @$('.search-list-header')
+
+    ui =
       searchList: @$('.search-list')
       searchForm: @$('.search-form')
 
     @children =
-      searchListHeader: new SearchListHeaderView(collection: @searches)
+      searchListFiltersHeader: new SearchListFiltersHeaderView(collection: @searchList.filters)
+      searchListFilters: new SearchListFiltersView(collection: @searchList.filters)
+      searchListSort: new SearchListSortView(model: @searchList)
       searchList: new SearchListView(collection: @searches)
       searchForm: new SearchFormView
 
     for k, view of @children
       view.render()
-      @ui[k].append(view.el)
+
+    ui.searchList.append(@children.searchListFiltersHeader.el)
+    ui.searchList.append(@children.searchListFilters.el)
+    ui.searchList.append(@children.searchListSort.el)
+    ui.searchList.append(@children.searchList.el)
+    ui.searchForm.append(@children.searchForm)
 
     @listenTo(@children.searchForm, 'create', @onCreate)
+    @listenTo(@children.searchList, 'childview:add-filter', @_onAddFilter)
+    @listenTo(@children.searchListFilters, 'childview:remove-filter', @_onRemoveFilter)
     @
 
   onCreate: (attributes) ->
     model = @searches.create(attributes)
-    model.startRefresh()
+    model.refresh()
 
   onEditSource: (e) ->
     e.preventDefault()
@@ -50,3 +66,6 @@ module.exports = class App extends Backbone.View
     @listenTo(sourceView, 'done', -> sourceView.remove())
     sourceView.render()
     @$el.append(sourceView.el)
+
+  _onAddFilter: (view, search) -> @searchList.addFilter(search)
+  _onRemoveFilter: (view, search) -> @searchList.removeFilter(search)

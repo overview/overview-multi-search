@@ -4,12 +4,22 @@ html, body, .container, #app {
   height: 100%;
 }
 
-.search-list-header {
+.search-list-filters-header {
+  display: none;
+  font-size: 1em;
+  line-height: 1.5;
+
+  &.filters-exist {
+    display: block;
+  }
+}
+
+.search-list-sort {
   position: relative;
   line-height: 1.5;
   margin-right: -@grid-gutter-width / 2;
 
-  .sort[data-n-searches="0"] { display: none; }
+  &[data-n-searches="0"] { display: none; }
 
   a {
     width: 5em;
@@ -21,6 +31,10 @@ html, body, .container, #app {
     }
   }
 
+  a.sort-by-name {
+    margin-left: 2em;
+  }
+
   a.sort-by-n-documents {
     position: absolute;
     top: 0;
@@ -28,27 +42,29 @@ html, body, .container, #app {
     text-align: right;
   }
 
-  .sort.sort-by-n-documents-desc {
+  &.sort-by-n-documents-desc {
     a.sort-by-n-documents-asc::before { content: "▾ "; }
     a.sort-by-n-documents-asc, a.sort-by-name-asc { display: block; }
   }
-  .sort.sort-by-n-documents-asc {
+  &.sort-by-n-documents-asc {
     a.sort-by-n-documents-desc::before { content: "▴ "; }
     a.sort-by-n-documents-desc, a.sort-by-name-asc { display: block; }
   }
-  .sort.sort-by-name-asc {
+  &.sort-by-name-asc {
     a.sort-by-name-desc::before { content: "▴ "; }
     a.sort-by-name-desc, a.sort-by-n-documents-desc { display: block; }
   }
-  .sort.sort-by-name-desc {
+  &.sort-by-name-desc {
     a.sort-by-name-asc::before { content: "▾ "; }
     a.sort-by-name-asc, a.sort-by-n-documents-desc { display: block; }
   }
 }
 
-ul.searches {
+ul.searches, ul.search-list-filters {
   .list-unstyled();
 }
+
+ul.searches li.filter { display: none; }
 
 li.search {
   clear: both;
@@ -102,7 +118,7 @@ li.search {
     }
   }
 
-  div.actions {
+  .actions {
     font-size: .85em;
     line-height: 1.5 / .85;
     float: right;
@@ -118,6 +134,36 @@ li.search {
 
     a:hover {
       opacity: 1;
+    }
+  }
+
+  .toggle-filter {
+    .glyphicon();
+    .glyphicon-filter();
+
+    float: left;
+    font-size: 1em;
+    line-height: 3;
+    width: 2em;
+    height: 3em;
+    text-decoration: none;
+
+    // when off
+    color: @gray-light;
+    opacity: .5;
+
+    &:hover {
+      opacity: .75;
+    }
+  }
+
+  &.filter .toggle-filter {
+    // when on
+    color: @brand-primary;
+    opacity: 1;
+
+    &:hover {
+      opacity: .75;
     }
   }
 }
@@ -183,10 +229,10 @@ div.source {
 }
 
 @keyframes bouncedelay {
-  0%, 80%, 100% { 
+  0%, 80%, 100% {
     transform: scale(0.0);
     -webkit-transform: scale(0.0);
-  } 40% { 
+  } 40% {
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }

@@ -2,6 +2,8 @@
   .actions
     a.edit(href='#') Edit
     a.delete(href='#') Delete
+    
+  a.toggle-filter(href="#", title="Filter all searches by this search")
 
   if nDocuments !== null
     a.object.count(href="#")= nDocuments.toLocaleString()

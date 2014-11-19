@@ -6287,60 +6287,75 @@ body,
 #app {
   height: 100%;
 }
-.search-list-header {
+.search-list-filters-header {
+  display: none;
+  font-size: 1em;
+  line-height: 1.5;
+}
+.search-list-filters-header.filters-exist {
+  display: block;
+}
+.search-list-sort {
   position: relative;
   line-height: 1.5;
   margin-right: -15px;
 }
-.search-list-header .sort[data-n-searches="0"] {
+.search-list-sort[data-n-searches="0"] {
   display: none;
 }
-.search-list-header a {
+.search-list-sort a {
   width: 5em;
   display: none;
   opacity: .5;
 }
-.search-list-header a::before {
+.search-list-sort a::before {
   content: "​";
   vertical-align: text-bottom;
 }
-.search-list-header a.sort-by-n-documents {
+.search-list-sort a.sort-by-name {
+  margin-left: 2em;
+}
+.search-list-sort a.sort-by-n-documents {
   position: absolute;
   top: 0;
   right: 5em;
   text-align: right;
 }
-.search-list-header .sort.sort-by-n-documents-desc a.sort-by-n-documents-asc::before {
+.search-list-sort.sort-by-n-documents-desc a.sort-by-n-documents-asc::before {
   content: "▾ ";
 }
-.search-list-header .sort.sort-by-n-documents-desc a.sort-by-n-documents-asc,
-.search-list-header .sort.sort-by-n-documents-desc a.sort-by-name-asc {
+.search-list-sort.sort-by-n-documents-desc a.sort-by-n-documents-asc,
+.search-list-sort.sort-by-n-documents-desc a.sort-by-name-asc {
   display: block;
 }
-.search-list-header .sort.sort-by-n-documents-asc a.sort-by-n-documents-desc::before {
+.search-list-sort.sort-by-n-documents-asc a.sort-by-n-documents-desc::before {
   content: "▴ ";
 }
-.search-list-header .sort.sort-by-n-documents-asc a.sort-by-n-documents-desc,
-.search-list-header .sort.sort-by-n-documents-asc a.sort-by-name-asc {
+.search-list-sort.sort-by-n-documents-asc a.sort-by-n-documents-desc,
+.search-list-sort.sort-by-n-documents-asc a.sort-by-name-asc {
   display: block;
 }
-.search-list-header .sort.sort-by-name-asc a.sort-by-name-desc::before {
+.search-list-sort.sort-by-name-asc a.sort-by-name-desc::before {
   content: "▴ ";
 }
-.search-list-header .sort.sort-by-name-asc a.sort-by-name-desc,
-.search-list-header .sort.sort-by-name-asc a.sort-by-n-documents-desc {
+.search-list-sort.sort-by-name-asc a.sort-by-name-desc,
+.search-list-sort.sort-by-name-asc a.sort-by-n-documents-desc {
   display: block;
 }
-.search-list-header .sort.sort-by-name-desc a.sort-by-name-asc::before {
+.search-list-sort.sort-by-name-desc a.sort-by-name-asc::before {
   content: "▾ ";
 }
-.search-list-header .sort.sort-by-name-desc a.sort-by-name-asc,
-.search-list-header .sort.sort-by-name-desc a.sort-by-n-documents-desc {
+.search-list-sort.sort-by-name-desc a.sort-by-name-asc,
+.search-list-sort.sort-by-name-desc a.sort-by-n-documents-desc {
   display: block;
 }
-ul.searches {
+ul.searches,
+ul.search-list-filters {
   padding-left: 0;
   list-style: none;
+}
+ul.searches li.filter {
+  display: none;
 }
 li.search {
   clear: both;
@@ -6390,21 +6405,53 @@ li.search div.query {
 li.search div.query span.title {
   padding-right: .25em;
 }
-li.search div.actions {
+li.search .actions {
   font-size: .85em;
   line-height: 1.76470588;
   float: right;
   margin-right: -15px;
   width: 5.88235294em;
 }
-li.search div.actions a {
+li.search .actions a {
   padding: 0 15px;
   display: block;
   text-align: right;
   opacity: .5;
 }
-li.search div.actions a:hover {
+li.search .actions a:hover {
   opacity: 1;
+}
+li.search .toggle-filter {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  float: left;
+  font-size: 1em;
+  line-height: 3;
+  width: 2em;
+  height: 3em;
+  text-decoration: none;
+  color: #777777;
+  opacity: .5;
+}
+li.search .toggle-filter:before {
+  content: "\e138";
+}
+li.search .toggle-filter:hover {
+  opacity: .75;
+}
+li.search.filter .toggle-filter {
+  color: #428bca;
+  opacity: 1;
+}
+li.search.filter .toggle-filter:hover {
+  opacity: .75;
 }
 div.main {
   margin-right: auto;
