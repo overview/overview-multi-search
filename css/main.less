@@ -64,6 +64,18 @@ ul.searches, ul.search-list-filters {
   .list-unstyled();
 }
 
+ul.search-list-filters:not(:empty) {
+  border: 1px solid #ddd;
+  border-radius: @border-radius-base;
+  background: #f5f5f5;
+  padding: 0 1em;
+
+  li.search {
+    // keep the border alive
+    margin: 0 (@grid-gutter-width / -2) - 1px;
+  }
+}
+
 ul.searches li.filter { display: none; }
 
 li.search {

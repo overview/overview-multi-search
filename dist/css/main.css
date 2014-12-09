@@ -6354,6 +6354,15 @@ ul.search-list-filters {
   padding-left: 0;
   list-style: none;
 }
+ul.search-list-filters:not(:empty) {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f5f5f5;
+  padding: 0 1em;
+}
+ul.search-list-filters:not(:empty) li.search {
+  margin: 0 -16px;
+}
 ul.searches li.filter {
   display: none;
 }
