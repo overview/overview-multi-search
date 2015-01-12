@@ -4,21 +4,24 @@ html, body, .container, #app {
   height: 100%;
 }
 
-.search-list-filters-header {
-  display: none;
-  font-size: 1em;
-  line-height: 1.5;
-
-  &.filters-exist {
-    display: block;
-  }
+.sort {
+  position: relative;
 }
 
-.search-list-sort {
+.search-list-filters-footer { .text-muted(); }
+
+.filter-list, .search-list-sort {
   position: relative;
   line-height: 1.5;
   margin-right: -@grid-gutter-width / 2;
+}
 
+.filter-list {
+  &>* { display: none; }
+  &>.filters-exist { display: block; }
+}
+
+.search-list-sort {
   &[data-n-searches="0"] { display: none; }
 
   a {
@@ -87,10 +90,6 @@ li.search {
 
   &.editing > .when-not-editing { display: none; }
   &:not(.editing) > .when-editing { display: none; }
-
-  &:hover {
-    background: @table-bg-hover;
-  }
 
   .count {
     float: right;

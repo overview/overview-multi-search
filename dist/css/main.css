@@ -6287,18 +6287,23 @@ body,
 #app {
   height: 100%;
 }
-.search-list-filters-header {
-  display: none;
-  font-size: 1em;
-  line-height: 1.5;
+.sort {
+  position: relative;
 }
-.search-list-filters-header.filters-exist {
-  display: block;
+.search-list-filters-footer {
+  color: #777777;
 }
+.filter-list,
 .search-list-sort {
   position: relative;
   line-height: 1.5;
   margin-right: -15px;
+}
+.filter-list > * {
+  display: none;
+}
+.filter-list > .filters-exist {
+  display: block;
 }
 .search-list-sort[data-n-searches="0"] {
   display: none;
@@ -6378,9 +6383,6 @@ li.search.editing > .when-not-editing {
 }
 li.search:not(.editing) > .when-editing {
   display: none;
-}
-li.search:hover {
-  background: #f5f5f5;
 }
 li.search .count {
   float: right;

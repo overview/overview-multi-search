@@ -1,5 +1,6 @@
 Backbone = require('backbone')
 SearchList = require('./models/SearchList')
+SearchListFiltersFooterView = require('./views/SearchListFiltersFooterView')
 SearchListFiltersHeaderView = require('./views/SearchListFiltersHeaderView')
 SearchListFiltersView = require('./views/SearchListFiltersView')
 SearchListSortView = require('./views/SearchListSortView')
@@ -31,11 +32,13 @@ module.exports = class App extends Backbone.View
     @$el.html(@template())
 
     ui =
+      filterList: @$('.filter-list')
       searchList: @$('.search-list')
       searchForm: @$('.search-form')
 
     @children =
       searchListFiltersHeader: new SearchListFiltersHeaderView(collection: @searchList.filters)
+      searchListFiltersFooter: new SearchListFiltersFooterView(collection: @searchList.filters)
       searchListFilters: new SearchListFiltersView(collection: @searchList.filters)
       searchListSort: new SearchListSortView(model: @searchList)
       searchList: new SearchListView(collection: @searches)
@@ -44,8 +47,9 @@ module.exports = class App extends Backbone.View
     for k, view of @children
       view.render()
 
-    ui.searchList.append(@children.searchListFilters.el)
-    ui.searchList.append(@children.searchListFiltersHeader.el)
+    ui.filterList.append(@children.searchListFiltersHeader.el)
+    ui.filterList.append(@children.searchListFilters.el)
+    ui.filterList.append(@children.searchListFiltersFooter.el)
     ui.searchList.append(@children.searchListSort.el)
     ui.searchList.append(@children.searchList.el)
     ui.searchForm.append(@children.searchForm.el)
