@@ -8042,9 +8042,6 @@ ul.search-list-filters:not(:empty) {
 ul.search-list-filters:not(:empty) li.search {
   margin: 0 -16px;
 }
-ul.searches li.filter {
-  display: none;
-}
 li.search {
   clear: both;
   position: relative;

@@ -21,7 +21,8 @@ module.exports = class SearchItemView extends Marionette.ItemView
     query: 'input[name=query]'
 
   initialize: ->
-    @listenTo(@model, 'filterPosition', @_onFilterPositionChanged)
+    @listenTo(@model, 'change:filterPosition', @_onFilterPositionChanged)
+    @_hasFilterPosition = false
 
   onClick: (e) ->
     e.preventDefault()
@@ -86,4 +87,71 @@ module.exports = class SearchItemView extends Marionette.ItemView
   _onFilterPositionChanged: -> @_refreshIsFilter()
 
   _refreshIsFilter: ->
-    @$el.toggleClass('filter', @model.get('filterPosition')?)
+    hasFilterPosition = @model.get('filterPosition')?
+    return if hasFilterPosition == @_hasFilterPosition
+    @_hasFilterPosition = hasFilterPosition
+
+    if hasFilterPosition
+      @$el.addClass('filter')
+      @_animateDisappear() if @$el.parent().hasClass('searches')
+    else
+      @$el.removeClass('filter')
+      @_animateAppear() if @$el.parent().hasClass('searches')
+
+  _animateDisappear: ->
+    @_css =
+      paddingTop: parseInt(@$el.css('padding-top'), 10)
+      paddingBottom: parseInt(@$el.css('padding-bottom'), 10)
+      height: parseInt(@$el.css('height'), 10)
+
+    $clone = @$el.clone()
+      .addClass('animation-clone')
+      .css
+        position: 'absolute'
+        background: 'white'
+        top: @$el.position().top + 'px'
+        left: @$el.position().left + 'px'
+        height: @_css.height + 'px'
+        width: '100%'
+        opacity: 1
+      .insertAfter(@$el)
+
+    @$el
+      .stop(true)
+      .css(opacity: 0, overflow: 'hidden', height: @_css.height + 'px')
+      .animate(height: 0, paddingTop: 0, paddingBottom: 0)
+
+    $clone
+      .animate
+        marginTop: -2 * (@_css.height + @_css.paddingTop + @_css.paddingBottom) + 'px'
+        opacity: 0
+      .queue(-> $clone.remove())
+
+  _animateAppear: ->
+    # Ensure @$el.queue() happens before or on same tick as $clone.remove()
+
+    @$el
+      .stop(true)
+      .animate
+        height: @_css.height + 'px'
+        paddingBottom: @_css.paddingBottom + 'px'
+        paddingTop: @_css.paddingTop + 'px'
+      .queue(=> @$el.css(opacity: 1, overflow: 'visible', height: 'auto'))
+
+    $clone = @$el.clone()
+      .addClass('animation-clone')
+      .css
+        position: 'absolute'
+        width: '100%'
+        top: @$el.position().top + 'px'
+        left: @$el.position().left + 'px'
+        marginTop: -2 * (@_css.height + @_css.paddingTop + @_css.paddingBottom) + 'px'
+        zIndex: 1
+        height: @_css.height + 'px'
+        paddingTop: @_css.paddingTop + 'px'
+        paddingBottom: @_css.paddingBottom + 'px'
+      .insertAfter(@$el)
+      .animate
+        marginTop: 0
+        opacity: 1
+      .queue(-> $clone.remove())
