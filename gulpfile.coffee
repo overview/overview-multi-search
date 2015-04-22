@@ -22,6 +22,7 @@ uploadToAws = (done) ->
       Bucket: 'overview-multi-search'
       Prefix: ''
       ACL: 'public-read'
+      CacheControl: 'no-cache'
     getS3Params: (localFile, stat, callback) ->
       if localFile in [ 'dist/show', 'dist/metadata' ]
         callback(null, ContentType: 'text/html')
@@ -29,8 +30,8 @@ uploadToAws = (done) ->
         callback(null, {})
   upload.on 'error', (err) ->
     console.error("Unable to upload: ", err.stack)
-  upload.on 'progress', ->
-    console.log('progress', upload.progressAmount, upload.progressTotal)
+  upload.on 'fileUploadStart', (__, s3Key) ->
+    console.log("Uploading #{s3Key}")
   upload.on('end', done)
 
 startBrowserify = (watch) ->

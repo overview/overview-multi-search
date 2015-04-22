@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "description": "Saves and organizes searches within an Overview document set",
   "scripts": {
-    "start": "node_modules/coffee-script/bin/coffee app/main.coffee",
-    "test": "node_modules/mocha/bin/mocha"
+    "start": "node_modules/.bin/coffee app/main.coffee",
+    "dev": "node_modules/.bin/gulp server",
+    "test": "node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",

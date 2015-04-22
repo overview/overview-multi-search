@@ -15,4 +15,6 @@ app.use (req, res, next) ->
 
 app.use(serveStatic('dist'))
 
-app.listen(9001)
+port = parseInt(process.env.PORT, 10) || 9001
+app.listen(port)
+console.log("Listening on http://localhost:#{port}")
