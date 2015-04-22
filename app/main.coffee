@@ -1,6 +1,5 @@
 express = require('express')
 morgan = require('morgan')
-serveStatic = require('serve-static')
 
 app = express()
 
@@ -13,7 +12,7 @@ app.use (req, res, next) ->
   res.set('Access-Control-Allow-Origin', '*')
   next()
 
-app.use(serveStatic('dist'))
+app.use(express.static('dist'))
 
 port = parseInt(process.env.PORT, 10) || 9001
 app.listen(port)
