@@ -25,7 +25,6 @@
     "chai": "^2.2.0",
     "coffee-script": "^1.9.2",
     "coffeeify": "^1.0.0",
-    "csv": "^0.4.1",
     "express": "^4.12.3",
     "gulp": "^3.8.11",
     "gulp-jade": "^1.0.0",
