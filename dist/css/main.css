@@ -8403,18 +8403,12 @@ body,
 }
 h2 {
   font-size: 1.25em;
+  line-height: 1.2;
   padding: 0;
-  margin: .5em 0;
-}
-.sort {
-  position: relative;
+  margin: 0.4em 0 0.4em 0;
 }
 .search-list-filters-footer {
   color: #777777;
-}
-.filter-list,
-.search-list-sort {
-  line-height: 1.5;
 }
 .filter-list > * {
   display: none;
@@ -8428,6 +8422,9 @@ h2 {
 .search-list-sort .sort {
   display: -webkit-flex;
   display: flex;
+  font-size: .85em;
+  line-height: 1.76470588;
+  border-bottom: 1px solid #dddddd;
 }
 .search-list-sort a {
   display: none;
@@ -8439,36 +8436,49 @@ h2 {
 .search-list-sort a.sort-by-query {
   -webkit-flex-grow: 1;
   flex-grow: 1;
-  margin-left: 1.5em;
+}
+.search-list-sort a.sort-by-n-documents i.spacing::after {
+  opacity: 0;
+  padding-right: 3.85em;
+  font-style: normal;
+  content: "Set as filterEditDelete";
 }
 .search-list-sort a.sort-by-n-documents::after {
   opacity: 0;
-  padding-right: 1.15em;
-  content: "EditDelete\f044\f1f8";
+  font-family: FontAwesome;
+  content: "\f0b0\f044\f1f8";
 }
 .search-list-sort.sort-by-n-documents-desc a.sort-by-n-documents-asc::before {
-  content: "▾ ";
+  font-family: FontAwesome;
+  content: "\f0de";
+  padding-right: .25em;
 }
 .search-list-sort.sort-by-n-documents-desc a.sort-by-n-documents-asc,
 .search-list-sort.sort-by-n-documents-desc a.sort-by-query-asc {
   display: block;
 }
 .search-list-sort.sort-by-n-documents-asc a.sort-by-n-documents-desc::before {
-  content: "▴ ";
+  font-family: FontAwesome;
+  content: "\f0dd";
+  padding-right: .25em;
 }
 .search-list-sort.sort-by-n-documents-asc a.sort-by-n-documents-desc,
 .search-list-sort.sort-by-n-documents-asc a.sort-by-query-asc {
   display: block;
 }
 .search-list-sort.sort-by-query-asc a.sort-by-query-desc::before {
-  content: "▴ ";
+  font-family: FontAwesome;
+  content: "\f0de";
+  padding-right: .25em;
 }
 .search-list-sort.sort-by-query-asc a.sort-by-query-desc,
 .search-list-sort.sort-by-query-asc a.sort-by-n-documents-desc {
   display: block;
 }
 .search-list-sort.sort-by-query-desc a.sort-by-query-asc::before {
-  content: "▾ ";
+  font-family: FontAwesome;
+  content: "\f0dd";
+  padding-right: .25em;
 }
 .search-list-sort.sort-by-query-desc a.sort-by-query-asc,
 .search-list-sort.sort-by-query-desc a.sort-by-n-documents-desc {
@@ -8486,12 +8496,15 @@ ul.search-list-filters:not(:empty) {
   border: 1px solid #ddd;
   border-radius: 4px;
   background: #f5f5f5;
-  padding: 0 1em;
+  padding: 0;
+}
+ul.search-list-filters:not(:empty) li.search {
+  padding-left: 1em;
+  padding-right: 1em;
 }
 li.search {
   padding: .25em 0;
   margin: 0;
-  height: 2.5em;
 }
 li.search .when-not-editing {
   cursor: pointer;
@@ -8505,8 +8518,10 @@ li.search:not(.editing) > .when-editing {
   display: none;
 }
 li.search span.count {
-  font-size: 1.25em;
-  line-height: 1.6;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  font-size: 1.2em;
+  line-height: 1.25;
   color: #337ab7;
   padding: 0 .5em;
   text-align: right;
@@ -8515,15 +8530,15 @@ li.search span.error {
   -webkit-flex-shrink: 1;
   flex-shrink: 1;
   color: #d9534f;
-  font-size: .8em;
-  line-height: 1.25;
-  padding: 0 0.625em;
+  font-size: .75em;
+  line-height: 2;
+  padding: 0 0.66666667em;
 }
 li.search h5 {
-  -webkit-flex: 1 0 auto;
-  flex-grow: 1 0 auto;
-  font-size: 1.25em;
-  line-height: 1.6;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  font-size: 1.2em;
+  line-height: 1.25;
   font-weight: bold;
   padding: 0;
   margin: 0;
@@ -8537,7 +8552,7 @@ li.search .actions {
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
   font-size: .85em;
-  line-height: 2.35294118;
+  line-height: 1.76470588;
   white-space: nowrap;
   margin-right: -0.5em;
 }
@@ -8553,35 +8568,6 @@ li.search .actions .delete {
 }
 li.search .actions a:hover {
   opacity: 1;
-}
-li.search .toggle-filter {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 2;
-  -webkit-flex-shrink: 0;
-  flex-shrink: 0;
-  width: 1.5em;
-  height: 2em;
-  text-decoration: none;
-  color: #777777;
-  opacity: .5;
-}
-li.search .toggle-filter:before {
-  content: "\f096";
-}
-li.search .toggle-filter:hover {
-  color: #337ab7;
-  opacity: .75;
-}
-li.search.filter .toggle-filter:before {
-  content: "\f046";
-}
-ul.search-list-filters li.search .toggle-filter:before {
-  content: "\f046";
 }
 div.main {
   margin-right: auto;

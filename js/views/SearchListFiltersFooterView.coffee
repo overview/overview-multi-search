@@ -12,8 +12,8 @@ module.exports = class SearchListFiltersFooterView extends Backbone.View
   render: ->
     if @collection.length > 0
       if @collection.length == 1
-        @$el.text('The searches below only count documents the above search found.')
+        @$el.text('This filter applies to all searches below.')
       else
-        @$el.text('The searches below only count documents the above searches found.')
+        @$el.text('These filters apply to all searches below.')
 
     @$el.toggleClass('filters-exist', @collection.length > 0)

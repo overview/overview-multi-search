@@ -52,7 +52,8 @@ module.exports = class SearchItemView extends Marionette.ItemView
 
     always =
       id: attrs.id
-      query: attrs['query']
+      query: attrs.query
+      filterPosition: attrs.filterPosition
 
     result = @model.getResult()
 

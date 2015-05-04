@@ -1,6 +1,4 @@
 .when-not-editing
-  a.toggle-filter(href="#", title="Filter all searches by this search")
-
   h5
     a.object(href='#')= query
 
@@ -15,6 +13,13 @@
       .bounce3
 
   .actions
+    a.toggle-filter(href='#')
+      if typeof(filterPosition) === 'undefined' || filterPosition === null
+        i.fa.fa-filter
+        | Set as filter
+      else
+        i.fa.fa-filter
+        | Remove this filter
     a.edit(href='#')
       i.fa.fa-edit
       | Edit

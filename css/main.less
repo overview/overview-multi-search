@@ -7,19 +7,12 @@ html, body, .container, #app {
 
 h2 {
   font-size: 1.25em;
+  line-height: 1.5 / 1.25;
   padding: 0;
-  margin: .5em 0;
-}
-
-.sort {
-  position: relative;
+  margin: .5em / 1.25 0 .5em / 1.25 0;
 }
 
 .search-list-filters-footer { .text-muted(); }
-
-.filter-list, .search-list-sort {
-  line-height: 1.5;
-}
 
 .filter-list {
   &>* { display: none; }
@@ -32,6 +25,9 @@ h2 {
   .sort {
     display: -webkit-flex;
     display: flex;
+    font-size: .85em;
+    line-height: 1.5 / .85;
+    border-bottom: 1px solid @table-border-color;
   }
 
   a {
@@ -45,33 +41,43 @@ h2 {
   a.sort-by-query {
     -webkit-flex-grow: 1;
     flex-grow: 1;
-    margin-left: 1.5em;
   }
 
   a.sort-by-n-documents {
-    &::after {
-      // Line up with count by creating an empty cell with the same width as
-      // everything that comes after.
+    // Line up with count by creating an empty cell with the same width as
+    // everything that comes after.
+    //
+    // Unfortunately, we need two different fonts to do this, which means a
+    // dummy HTML entity. That's the i.spacing.
+
+    i.spacing::after {
       opacity: 0;
-      padding-right: 1.15em;
-      content: "EditDelete@{fa-var-edit}@{fa-var-trash}";
+      padding-right: 3.85em; // Calculated this by eyeing it
+      font-style: normal;
+      content: "Set as filterEditDelete";
+    }
+
+    &::after {
+      opacity: 0;
+      font-family: FontAwesome;
+      content: "@{fa-var-filter}@{fa-var-edit}@{fa-var-trash}";
     }
   }
 
   &.sort-by-n-documents-desc {
-    a.sort-by-n-documents-asc::before { content: "▾ "; }
+    a.sort-by-n-documents-asc::before { font-family: FontAwesome; content: @fa-var-sort-asc; padding-right: .25em; }
     a.sort-by-n-documents-asc, a.sort-by-query-asc { display: block; }
   }
   &.sort-by-n-documents-asc {
-    a.sort-by-n-documents-desc::before { content: "▴ "; }
+    a.sort-by-n-documents-desc::before { font-family: FontAwesome; content: @fa-var-sort-desc; padding-right: .25em; }
     a.sort-by-n-documents-desc, a.sort-by-query-asc { display: block; }
   }
   &.sort-by-query-asc {
-    a.sort-by-query-desc::before { content: "▴ "; }
+    a.sort-by-query-desc::before { font-family: FontAwesome; content: @fa-var-sort-asc; padding-right: .25em; }
     a.sort-by-query-desc, a.sort-by-n-documents-desc { display: block; }
   }
   &.sort-by-query-desc {
-    a.sort-by-query-asc::before { content: "▾ "; }
+    a.sort-by-query-asc::before { font-family: FontAwesome; content: @fa-var-sort-desc; padding-right: .25em; }
     a.sort-by-query-asc, a.sort-by-n-documents-desc { display: block; }
   }
 }
@@ -88,7 +94,12 @@ ul.search-list-filters:not(:empty) {
   border: 1px solid #ddd;
   border-radius: @border-radius-base;
   background: #f5f5f5;
-  padding: 0 1em;
+  padding: 0;
+
+  li.search {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
 }
 
 li.search {
@@ -100,14 +111,15 @@ li.search {
 
   padding: .25em 0;
   margin: 0;
-  height: 2.5em; // box-sizing:border-box, so includes padding
 
   &.editing > .when-not-editing { display: none; }
   &:not(.editing) > .when-editing { display: none; }
 
   span.count {
-    font-size: 1.25em;
-    line-height: 2 / 1.25;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    font-size: 1.2em;
+    line-height: 1.5 / 1.2;
     color: @link-color;
     padding: 0 .5em;
     text-align: right; // useful especially for errors
@@ -117,16 +129,16 @@ li.search {
     -webkit-flex-shrink: 1;
     flex-shrink: 1;
     color: @brand-danger;
-    font-size: .8em;
-    line-height: 1 / .8; // wrap to two lines
-    padding: 0 .5em / .8;
+    font-size: .75em;
+    line-height: 1.5 / .75; // wrap to two lines
+    padding: 0 .5em / .75;
   }
 
   h5 {
-    -webkit-flex: 1 0 auto;
-    flex-grow: 1 0 auto;
-    font-size: 1.25em;
-    line-height: 2 / 1.25;
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+    font-size: 1.2em;
+    line-height: 1.5 / 1.2;
     font-weight: bold;
     padding: 0;
     margin: 0;
@@ -143,7 +155,7 @@ li.search {
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
     font-size: .85em;
-    line-height: 2 / .85;
+    line-height: 1.5 / .85;
     white-space: nowrap;
     margin-right: -.5em;
 
@@ -164,35 +176,6 @@ li.search {
       opacity: 1;
     }
   }
-
-  .toggle-filter {
-    .fa-icon();
-    &:before { content: @fa-var-square-o; }
-
-    line-height: 2;
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-    width: 1.5em;
-    height: 2em;
-    text-decoration: none;
-
-    color: @gray-light;
-    opacity: .5;
-
-    &:hover {
-      color: @brand-primary;
-      opacity: .75;
-    }
-  }
-
-  &.filter .toggle-filter {
-    // when on
-    &:before { content: @fa-var-check-square-o; }
-  }
-}
-
-ul.search-list-filters li.search .toggle-filter {
-  &:before { content: @fa-var-check-square-o; }
 }
 
 div.main {

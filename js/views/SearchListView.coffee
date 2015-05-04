@@ -4,5 +4,3 @@ module.exports = class SearchListView extends Marionette.CollectionView
   tagName: 'ul'
   className: 'searches'
   childView: require('./SearchItemView')
-  childViewOptions:
-    showFilters: false
