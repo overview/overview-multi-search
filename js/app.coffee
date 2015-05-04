@@ -56,12 +56,14 @@ module.exports = class App extends Backbone.View
 
     @listenTo(@children.searchForm, 'create', @onCreate)
     @listenTo(@children.searchList, 'childview:add-filter', @_onAddFilter)
+    @listenTo(@children.searchList, 'childview:select', @_onSelect)
     @listenTo(@children.searchListFilters, 'childview:remove-filter', @_onRemoveFilter)
     @
 
   onCreate: (attributes) ->
     model = @searches.create(attributes)
     model.refresh()
+    @select(model)
 
   onEditSource: (e) ->
     e.preventDefault()
@@ -71,5 +73,13 @@ module.exports = class App extends Backbone.View
     sourceView.render()
     @$el.append(sourceView.el)
 
+  select: (search) ->
+    query = search.getFullQuery()
+    window.parent.postMessage({
+      call: 'setDocumentListParams'
+      args: [ { q: query } ]
+    }, global.server)
+
   _onAddFilter: (view, search) -> @searchList.addFilter(search)
   _onRemoveFilter: (view, search) -> @searchList.removeFilter(search)
+  _onSelect: (view, search) -> @select(search)

@@ -113,7 +113,7 @@ gulp.task 'watch', [ 'watch-css', 'watch-js', 'watch-jade', 'watch-public' ], ->
 
 gulp.task 'server', ->
   supervisor("app/main.coffee", {
-    watch: [ 'app', 'lib' ]
+    watch: [ 'app' ]
     extensions: [ 'coffee', 'js', 'jade' ]
   })
 

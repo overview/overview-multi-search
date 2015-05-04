@@ -1,10 +1,11 @@
 _ = require('lodash')
 Backbone = require('backbone')
 
-# An search. Has a name and some terms.
+###
+Holds a query and its status.
+###
 module.exports = class Search extends Backbone.Model
   defaults:
-    name: ''
     query: ''
     nDocuments: null
     error: null
@@ -13,7 +14,7 @@ module.exports = class Search extends Backbone.Model
     filterError: null
 
   parse: (json) -> _.extend({ id: json.id }, json.json)
-  toJSON: -> { json: _.pick(@attributes, 'name', 'query', 'nDocuments', 'error') }
+  toJSON: -> { json: _.pick(@attributes, 'query', 'nDocuments', 'error') }
 
   ###
   Sets the query, if it changed.
@@ -115,3 +116,17 @@ module.exports = class Search extends Backbone.Model
     else
       if !@get('nDocuments')?
         @refresh()
+
+  ###
+  Returns { nDocuments: X, error: Y }, using `filtered` variants if applicable.
+
+  In other words, if `filter` is set, the `nDocuments` in this result will be
+  the Search's `filterNDocuments`.
+  ###
+  getResult: ->
+    if @get('filter')
+      nDocuments: @get('filterNDocuments')
+      error: @get('filterError')
+    else
+      nDocuments: @get('nDocuments')
+      error: @get('error')

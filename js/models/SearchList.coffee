@@ -2,8 +2,8 @@ Backbone = require('backbone')
 _ = require('lodash')
 
 Comparators =
-  'name-asc': (s1, s2) -> s1.attributes.name.localeCompare(s2.attributes.name)
-  'name-desc': (s1, s2) -> s2.attributes.name.localeCompare(s1.attributes.name)
+  'query-asc': (s1, s2) -> s1.attributes.query.localeCompare(s2.attributes.query)
+  'query-desc': (s1, s2) -> s2.attributes.query.localeCompare(s1.attributes.query)
 
   'n-documents-asc': (s1, s2) ->
     n = (m) ->
@@ -16,7 +16,7 @@ Comparators =
     n2 = n(s2)
 
     if n1 == n2 # including both-null
-      s1.attributes.name.localeCompare(s2.attributes.name)
+      s1.attributes.query.localeCompare(s2.attributes.query)
     else if !n1?
       1
     else if !n2?
@@ -35,7 +35,7 @@ Comparators =
     n2 = n(s2)
 
     if n1 == n2 # including both-null
-      s1.attributes.name.localeCompare(s2.attributes.name)
+      s1.attributes.query.localeCompare(s2.attributes.query)
     else if !n1?
       1
     else if !n2?
@@ -48,7 +48,7 @@ List of Searches, with a sort key and a filter.
 
 The searches are stored in `@searches`. They're
 
-There are four available sort keys: `'name-asc'`, `'name-desc'`,
+There are four available sort keys: `'query-asc'`, `'query-desc'`,
 `'n-documents-asc'`, and `'n-documents-desc'`. All non-"filter" searches will
 be sorted accordingly.
 
@@ -68,7 +68,7 @@ Array.
 ###
 module.exports = class SearchList extends Backbone.Model
   defaults:
-    sortKey: 'name-asc'
+    sortKey: 'query-asc'
 
   initialize: (attrs, options) ->
     throw 'Must pass options.searches, a Searches' if !options.searches?
@@ -82,7 +82,7 @@ module.exports = class SearchList extends Backbone.Model
     @_refreshComparator()
 
     @listenTo(@searches, 'change:query', @_onSearchQueryChanged)
-    @listenTo(@searches, 'change:name change:nDocuments change:filterNDocuments reset fetch', @sortLater)
+    @listenTo(@searches, 'change:query change:nDocuments change:filterNDocuments reset fetch', @sortLater)
 
     @_debouncedSortLater = _.throttle(@sort.bind(@), 250)
 
@@ -111,7 +111,7 @@ module.exports = class SearchList extends Backbone.Model
   ###
   Sorts Searches by the given sortKey.
 
-  We don't sort automatically because name, nDocuments and filterNDocuments
+  We don't sort automatically because query, nDocuments and filterNDocuments
   impact the sort order, and they can change at any time.
   ###
   sort: -> @searches.sort()

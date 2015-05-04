@@ -1,4 +1,3 @@
-_ = require('lodash')
 Backbone = require('backbone')
 
 module.exports = class Searches extends Backbone.Collection

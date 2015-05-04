@@ -6,10 +6,10 @@ module.exports = class SearchItemView extends Marionette.ItemView
   className: 'search'
 
   events:
-    'click .delete': 'onDelete'
     'click .edit': 'onEdit'
+    'click .delete': 'onDelete'
     'click .toggle-filter': 'onToggleFilter'
-    'click a.object': 'onClick'
+    'click .when-not-editing': 'onClick'
     'submit form': 'onSubmit'
     'reset form': 'onReset'
 
@@ -17,7 +17,6 @@ module.exports = class SearchItemView extends Marionette.ItemView
     change: 'render'
 
   ui:
-    name: 'input[name=name]'
     query: 'input[name=query]'
 
   initialize: ->
@@ -26,23 +25,19 @@ module.exports = class SearchItemView extends Marionette.ItemView
 
   onClick: (e) ->
     e.preventDefault()
-    query = @model.getFullQuery()
-    name = @model.get('name')
-    window.parent.postMessage({
-      call: 'setDocumentListParams'
-      args: [ { q: query } ]
-    }, global.server)
+    @trigger('select', @model)
 
   setEditing: (editing) -> @$el.toggleClass('editing', editing)
 
-  onEdit: (e) -> @setEditing(true)
+  onEdit: (e) ->
+    e.stopPropagation()
+    @setEditing(true)
 
   onSubmit: (e) ->
     e.preventDefault()
-    name = @ui.name.val().trim()
     query = @ui.query.val().trim()
-    if name && query
-      @model.save { name: name, query: query, nDocuments: null, error: null },
+    if query
+      @model.save { query: query, nDocuments: null, error: null },
         success: (model) -> model.refreshIfNeeded()
     @setEditing(false)
 
@@ -58,33 +53,42 @@ module.exports = class SearchItemView extends Marionette.ItemView
     always =
       id: attrs.id
       query: attrs['query']
-      name: attrs['name']
 
-    depending = if attrs['filter']?
-      nDocuments: attrs['filterNDocuments']
-      error: attrs['error']
-    else
-      nDocuments: attrs['nDocuments']
-      error: attrs['error']
+    result = @model.getResult()
 
-    $.extend(always, depending)
+    $.extend(always, result)
 
   onDelete: (e) ->
     e.preventDefault()
+    e.stopPropagation()
 
     if window.confirm('Are you sure you want to delete this search?')
       @model.destroy()
 
-  onRender: -> @_refreshIsFilter()
+  onRender: ->
+    @_refreshStatus()
+    @_refreshIsFilter()
 
   onToggleFilter: (e) ->
     e.preventDefault()
+    e.stopPropagation()
+
     if !@model.get('filterPosition')?
       @trigger('add-filter', @model)
     else
       @trigger('remove-filter', @model)
 
   _onFilterPositionChanged: -> @_refreshIsFilter()
+
+  _refreshStatus: ->
+    result = @model.getResult()
+    status = if result.nDocuments?
+      'success'
+    else if result.error?
+      'error'
+    else
+      'in-progress'
+    @el.className = "search #{status}"
 
   _refreshIsFilter: ->
     hasFilterPosition = @model.get('filterPosition')?
@@ -128,30 +132,40 @@ module.exports = class SearchItemView extends Marionette.ItemView
       .queue(-> $clone.remove())
 
   _animateAppear: ->
-    # Ensure @$el.queue() happens before or on same tick as $clone.remove()
+    if !@_css?
+      @$el
+        .stop(true)
+        .css
+          height: 'auto'
+          paddingBottom: '.25em'
+          paddingTop: '.25em'
+          opacity: 1
+          overflow: 'visible'
+    else
+      # Ensure @$el.queue() happens before or on same tick as $clone.remove()
+      
+      @$el
+        .stop(true)
+        .animate
+          height: @_css.height + 'px'
+          paddingBottom: @_css.paddingBottom + 'px'
+          paddingTop: @_css.paddingTop + 'px'
+        .queue(=> @$el.css(opacity: 1, overflow: 'visible', height: 'auto'))
 
-    @$el
-      .stop(true)
-      .animate
-        height: @_css.height + 'px'
-        paddingBottom: @_css.paddingBottom + 'px'
-        paddingTop: @_css.paddingTop + 'px'
-      .queue(=> @$el.css(opacity: 1, overflow: 'visible', height: 'auto'))
-
-    $clone = @$el.clone()
-      .addClass('animation-clone')
-      .css
-        position: 'absolute'
-        width: '100%'
-        top: @$el.position().top + 'px'
-        left: @$el.position().left + 'px'
-        marginTop: -2 * (@_css.height + @_css.paddingTop + @_css.paddingBottom) + 'px'
-        zIndex: 1
-        height: @_css.height + 'px'
-        paddingTop: @_css.paddingTop + 'px'
-        paddingBottom: @_css.paddingBottom + 'px'
-      .insertAfter(@$el)
-      .animate
-        marginTop: 0
-        opacity: 1
-      .queue(-> $clone.remove())
+      $clone = @$el.clone()
+        .addClass('animation-clone')
+        .css
+          position: 'absolute'
+          width: '100%'
+          top: @$el.position().top + 'px'
+          left: @$el.position().left + 'px'
+          marginTop: -2 * (@_css.height + @_css.paddingTop + @_css.paddingBottom) + 'px'
+          zIndex: 1
+          height: @_css.height + 'px'
+          paddingTop: @_css.paddingTop + 'px'
+          paddingBottom: @_css.paddingBottom + 'px'
+        .insertAfter(@$el)
+        .animate
+          marginTop: 0
+          opacity: 1
+        .queue(-> $clone.remove())

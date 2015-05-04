@@ -1,4 +1,3 @@
-_ = require('lodash')
 Backbone = require('backbone')
 
 module.exports = class SearchListSortView extends Backbone.View
@@ -8,8 +7,8 @@ module.exports = class SearchListSortView extends Backbone.View
   events:
     'click a.sort-by-n-documents-desc': '_onSortByNDocumentsDesc'
     'click a.sort-by-n-documents-asc': '_onSortByNDocumentsAsc'
-    'click a.sort-by-name-asc': '_onSortByNameAsc'
-    'click a.sort-by-name-desc': '_onSortByNameDesc'
+    'click a.sort-by-query-asc': '_onSortByQueryAsc'
+    'click a.sort-by-query-desc': '_onSortByQueryDesc'
 
   initialize: ->
     throw 'Must pass model, a SearchList' if !@model?.searches?
@@ -34,13 +33,13 @@ module.exports = class SearchListSortView extends Backbone.View
   _sortBy: (key) ->
     @model.setSortKey(key)
 
-  _onSortByNameAsc: (e) ->
+  _onSortByQueryAsc: (e) ->
     e.preventDefault()
-    @_sortBy('name-asc')
+    @_sortBy('query-asc')
 
-  _onSortByNameDesc: (e) ->
+  _onSortByQueryDesc: (e) ->
     e.preventDefault()
-    @_sortBy('name-desc')
+    @_sortBy('query-desc')
 
   _onSortByNDocumentsDesc: (e) ->
     e.preventDefault()

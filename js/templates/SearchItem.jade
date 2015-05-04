@@ -1,43 +1,35 @@
 .when-not-editing
-  .actions
-    a.edit(href='#') Edit
-    a.delete(href='#') Delete
-    
   a.toggle-filter(href="#", title="Filter all searches by this search")
 
+  h5
+    a.object(href='#')= query
+
   if nDocuments !== null
-    a.object.count(href="#")= nDocuments.toLocaleString()
+    span.count.object(href="#")= nDocuments.toLocaleString()
   else if error !== null
-    span.error= error.message
+    span.count.error= error.message
   else
-    .object.count.spinner
+    span.count.object.spinner
       .bounce1
       .bounce2
       .bounce3
 
-  .name
-    h5
-      a.object(href='#')= name
-
-  .query
-    span.title Query:
-    span.query= query
+  .actions
+    a.edit(href='#')
+      i.fa.fa-edit
+      | Edit
+    a.delete(href='#')
+      i.fa.fa-trash
+      | Delete
 
 .when-editing
-  form.form-horizontal(action='#', method='post', role='form')
-    fieldset
-      legend.col-sm-offset-2.col-sm-10
-        h5 Edit search
-      .form-group.form-group-sm
-        label.col-sm-2.control-label(for='search-#{id}-name') Name
-        .col-sm-10
-          input.form-control(id='search-#{id}-name', name='name', value=name, required=true)
-      .form-group.form-group-sm
-        label.col-sm-2.control-label(for="search-#{id}-query") Query
-        .col-sm-10
-          input.form-control(id='search-#{id}-query', name='query', value=query, placeholder='query terms', required=true)
-          p.help-block e.g., <tt>criminal OR justice</tt>; <a target="_blank" href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax">more query syntax</a> (opens in new tab)
-      .form-group.form-group-sm
-        .col-sm-offset-2.col-sm-10.btn-group
-          button.btn.btn-primary(type='submit') Save
-          button.btn.btn-default(type='reset') Cancel
+  form(action='#', method='post', role='form')
+    .input-group.input-group-sm
+      input.form-control(id='search-#{id}-query', name='query', value=query, placeholder='Person, place, thing or action', required=true)
+      span.input-group-btn
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-search
+          | Search
+      span.input-group-btn
+        button.btn.btn-default(type='reset')
+          | Cancel

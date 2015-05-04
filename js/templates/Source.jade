@@ -2,7 +2,6 @@ form.source(action='#', method='post', role='form')
   .form-group
     label(for='source-source') Enter one search per line
     textarea.form-control#source-source(name='source', rows=10)= source
-    p.help-text Searches cannot contain commas or quotation marks. (Search terms will be quoted automatically.)
-    p.help-text Should you prefer, you may enter both a name and query for each search by separating them with a comma. For instance, <kbd>Music,music OR sound</kbd>. (If you're maintaining your list of searches in a spreadsheet, use CSV format.)
-  button.btn.btn-primary(type='submit') Use these searches
-  button.btn.btn-default(type='reset') Cancel
+  .btn-group
+    button.btn.btn-primary(type='submit') Use these searches
+    button.btn.btn-default(type='reset') Cancel

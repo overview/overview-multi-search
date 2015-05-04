@@ -14,9 +14,8 @@ module.exports = class SearchFormView extends Backbone.View
   onSubmit: (e) ->
     e.preventDefault()
 
-    name = @$('input[name=name]').val().trim()
+    query = @$('input[name=query]').val().trim()
 
-    if name
-      query = name
-      @trigger('create', name: name, query: name)
+    if query
+      @trigger('create', query: query)
       @$('form')[0].reset()
