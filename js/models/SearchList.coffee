@@ -83,6 +83,7 @@ module.exports = class SearchList extends Backbone.Model
 
     @listenTo(@searches, 'change:query', @_onSearchQueryChanged)
     @listenTo(@searches, 'change:query change:nDocuments change:filterNDocuments reset fetch', @sortLater)
+    @listenTo(@searches, 'add', @_onSearchAdded)
 
     @_debouncedSortLater = _.throttle(@sort.bind(@), 250)
 
@@ -200,6 +201,10 @@ module.exports = class SearchList extends Backbone.Model
     @_refilterNonFilterSearches()
 
     undefined
+
+  _onSearchAdded: (model) ->
+    filterString = @_getFilterString()
+    model.setFilter(filterString)
 
   _onSearchQueryChanged: (model) ->
     if (position = model.get('filterPosition'))?

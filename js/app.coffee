@@ -57,6 +57,7 @@ module.exports = class App extends Backbone.View
     @listenTo(@children.searchForm, 'create', @onCreate)
     @listenTo(@children.searchList, 'childview:add-filter', @_onAddFilter)
     @listenTo(@children.searchList, 'childview:select', @_onSelect)
+    @listenTo(@children.searchListFilters, 'childview:select', @_onSelect)
     @listenTo(@children.searchListFilters, 'childview:remove-filter', @_onRemoveFilter)
     @
 
