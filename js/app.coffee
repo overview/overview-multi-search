@@ -19,7 +19,7 @@ module.exports = class App extends Backbone.View
     @searches = options.searches
     @searchList = new SearchList({}, searches: @searches)
 
-    @searches.on('change:query change:filter', (s) -> s.refreshIfNeeded())
+    @searches.on('add change:query change:filter', (s) -> s.refreshIfNeeded())
     @searches.each((s) -> s.refreshIfNeeded())
     @children = {}
 
