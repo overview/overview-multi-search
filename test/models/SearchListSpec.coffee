@@ -10,9 +10,9 @@ describe 'models/SearchList', ->
 
   beforeEach ->
     @searches = new Searches([
-      new Search(id: 'abc', name: 'n0', query: 'q0')
-      new Search(id: 'bcd', name: 'n1', query: 'q1')
-      new Search(id: 'cde', name: 'n2', query: 'q2')
+      new Search(id: 'abc', query: 'q0')
+      new Search(id: 'bcd', query: 'q1')
+      new Search(id: 'cde', query: 'q2')
     ])
 
     @search0 = @searches.at(0)
@@ -45,8 +45,8 @@ describe 'models/SearchList', ->
     expect(@searches.comparator).to.exist
 
   describe '#defaults', ->
-    it 'should have sortKey=name-asc', ->
-      expect(@subject.get('sortKey')).to.eq('name-asc')
+    it 'should have sortKey=query-asc', ->
+      expect(@subject.get('sortKey')).to.eq('query-asc')
 
   describe '#setSortKey()', ->
     it 'should change sort-key', ->
@@ -68,8 +68,8 @@ describe 'models/SearchList', ->
       @subject.setSortKey(@subject.get('sortKey'))
       expect(@subject.sortLater).not.to.have.been.called
 
-    it 'should call sortLater() when the name changes', ->
-      @search0.set(name: 'n0-1')
+    it 'should call sortLater() when the query changes', ->
+      @search0.set(query: 'q0-1')
       expect(@subject.sortLater).to.have.been.called
 
     it 'should call sortLater() on fetch', ->

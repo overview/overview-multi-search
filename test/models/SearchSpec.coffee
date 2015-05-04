@@ -3,17 +3,16 @@ Search = require('../../js/models/Search')
 
 describe 'Search', ->
   describe '#parse', ->
-    it 'should grab id, name and query', ->
-      ret = Search.prototype.parse(id: 'i1', json: { name: 'n1', query: 'q1' })
+    it 'should grab id and query', ->
+      ret = Search.prototype.parse(id: 'i1', json: { query: 'q1' })
       expect(ret.id).to.eq('i1')
-      expect(ret.name).to.eq('n1')
       expect(ret.query).to.eq('q1')
 
   describe 'with a typical Search', ->
     beforeEach ->
       @sandbox = sinon.sandbox.create()
       @sandbox.stub(Backbone, 'ajax')
-      @subject = new Search(id: 'id', name: 'n1', query: 'q1')
+      @subject = new Search(id: 'id', query: 'q1')
       @subject.save = sinon.spy()
       @subject.collection = { documentSetId: 'dsid', server: 'http://server' }
 
