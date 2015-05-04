@@ -37,8 +37,9 @@ module.exports = class SearchItemView extends Marionette.ItemView
     e.preventDefault()
     query = @ui.query.val().trim()
     if query
-      @model.save { query: query, nDocuments: null, error: null },
-        success: (model) -> model.refreshIfNeeded()
+      @model.setQuery(query)
+      # We'll skip a .save() because there's one coming up
+      @model.refreshIfNeeded()
     @setEditing(false)
 
   onReset: (e) ->
