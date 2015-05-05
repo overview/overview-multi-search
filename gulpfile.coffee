@@ -112,7 +112,7 @@ gulp.task 'watch-jade', [ 'jade' ], ->
 gulp.task 'watch', [ 'watch-css', 'watch-js', 'watch-jade', 'watch-public' ], ->
 
 gulp.task 'server', ->
-  supervisor("app/main.coffee", {
+  supervisor("app/main.js", {
     watch: [ 'app' ]
     extensions: [ 'coffee', 'js', 'jade' ]
   })
