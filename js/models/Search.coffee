@@ -67,7 +67,7 @@ module.exports = class Search extends Backbone.Model
     else
       query
 
-    url = "#{server}/api/v1/document-sets/#{documentSetId}/documents?fields=id&q=#{encodeURIComponent(q)}"
+    url = "#{server}/api/v1/document-sets/#{documentSetId}/documents?fields=id&q=#{encodeURIComponent(q)}&refresh=true"
 
     responseIsStale = =>
       query != @get('query') || filter != @get('filter')
