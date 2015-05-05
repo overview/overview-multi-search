@@ -13,8 +13,8 @@ module.exports = class Search extends Backbone.Model
     filterNDocuments: null
     filterError: null
 
-  parse: (json) -> _.extend({ id: json.id }, json.json)
-  toJSON: -> { json: _.pick(@attributes, 'query', 'nDocuments', 'error') }
+  parse: (json) -> { id: json.id, query: json.json?.query }
+  toJSON: -> { json: _.pick(@attributes, 'query') }
 
   ###
   Sets the query, if it changed.
@@ -80,14 +80,12 @@ module.exports = class Search extends Backbone.Model
           @set(filterNDocuments: ids.length, filterError: null)
         else
           @set(nDocuments: ids.length, error: null)
-        @save()
       error: (xhr) =>
         return if responseIsStale()
         if filter
           @set(filterNDocuments: null, filterError: xhr.responseJSON)
         else
           @set(nDocuments: null, error: xhr.responseJSON)
-        @save()
 
   ###
   Searches against the server, to find `nDocuments` or `filterNDocuments`.

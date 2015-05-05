@@ -13,7 +13,6 @@ describe 'Search', ->
       @sandbox = sinon.sandbox.create()
       @sandbox.stub(Backbone, 'ajax')
       @subject = new Search(id: 'id', query: 'q1')
-      @subject.save = sinon.spy()
       @subject.collection = { documentSetId: 'dsid', server: 'http://server' }
 
     afterEach ->
@@ -57,19 +56,17 @@ describe 'Search', ->
           'http://server/api/v1/document-sets/dsid/documents?fields=id&q=foo%20bar%5B%5D'
         )
 
-      it 'should set nDocuments and save on success', ->
+      it 'should set nDocuments on success', ->
         @subject.refresh()
         Backbone.ajax.firstCall.args[0].success([ 123, 234, 345 ])
         expect(@subject.get('nDocuments')).to.eq(3)
         expect(@subject.get('error')).to.be.null
-        expect(@subject.save).to.have.been.called
 
-      it 'should set error and save on failure', ->
+      it 'should set error on failure', ->
         @subject.refresh()
         Backbone.ajax.firstCall.args[0].error(responseJSON: { message: 'm1' })
         expect(@subject.get('nDocuments')).to.be.null
         expect(@subject.get('error')).to.deep.eq(message: 'm1')
-        expect(@subject.save).to.have.been.called
 
       it 'should ignore an obsolete success', ->
         @subject.refresh()
@@ -78,7 +75,6 @@ describe 'Search', ->
         Backbone.ajax.firstCall.args[0].success([ 123, 234, 345 ])
         expect(@subject.get('nDocuments')).to.be.null
         expect(@subject.get('error')).to.be.null
-        expect(@subject.save).not.to.have.been.called
 
       it 'should ignore an obsolete error', ->
         @subject.refresh()
@@ -87,7 +83,6 @@ describe 'Search', ->
         Backbone.ajax.firstCall.args[0].error(responseJSON: { message: 'm1' })
         expect(@subject.get('nDocuments')).to.be.null
         expect(@subject.get('error')).to.be.null
-        expect(@subject.save).not.to.have.been.called
 
       describe 'with a filter', ->
         beforeEach -> @subject.set(filter: '(f1) AND (f2)')
@@ -100,20 +95,18 @@ describe 'Search', ->
             'http://server/api/v1/document-sets/dsid/documents?fields=id&q=(f1)%20AND%20(f2)%20AND%20(q1)'
           )
 
-        it 'should set filterNDocuments and save on success', ->
+        it 'should set filterNDocuments on success', ->
           @subject.set(filter: '(f1) AND (f2)')
           @subject.refresh()
           Backbone.ajax.firstCall.args[0].success([ 123, 234, 345 ])
           expect(@subject.get('filterNDocuments')).to.eq(3)
           expect(@subject.get('filterError')).to.be.null
-          expect(@subject.save).to.have.been.called
 
-        it 'should set filterError and save on failure', ->
+        it 'should set filterError on failure', ->
           @subject.refresh()
           Backbone.ajax.firstCall.args[0].error({ responseJSON: { message: 'm1' }})
           expect(@subject.get('filterNDocuments')).to.be.null
           expect(@subject.get('filterError')).to.deep.eq(message: 'm1')
-          expect(@subject.save).to.have.been.called
 
         it 'should ignore an obsolete success after the filter changes', ->
           @subject.refresh()
@@ -122,7 +115,6 @@ describe 'Search', ->
           Backbone.ajax.firstCall.args[0].success([ 123, 234, 345 ])
           expect(@subject.get('filterNDocuments')).to.be.null
           expect(@subject.get('filterError')).to.be.null
-          expect(@subject.save).not.to.have.been.called
 
         it 'should ignore an obsolete error after the filter changes', ->
           @subject.refresh()
@@ -131,7 +123,6 @@ describe 'Search', ->
           Backbone.ajax.firstCall.args[0].error(responseJSON: { message: 'm1' })
           expect(@subject.get('filterNDocuments')).to.be.null
           expect(@subject.get('filterError')).to.be.null
-          expect(@subject.save).not.to.have.been.called
 
         it 'should ignore an obsolete success after the query changes', ->
           @subject.refresh()
@@ -140,7 +131,6 @@ describe 'Search', ->
           Backbone.ajax.firstCall.args[0].success([ 123, 234, 345 ])
           expect(@subject.get('filterNDocuments')).to.be.null
           expect(@subject.get('filterError')).to.be.null
-          expect(@subject.save).not.to.have.been.called
 
         it 'should ignore an obsolete error after the query changes', ->
           @subject.refresh()
@@ -149,7 +139,6 @@ describe 'Search', ->
           Backbone.ajax.firstCall.args[0].error(responseJSON: { message: 'm1' })
           expect(@subject.get('filterNDocuments')).to.be.null
           expect(@subject.get('filterError')).to.be.null
-          expect(@subject.save).not.to.have.been.called
 
     describe '#refreshIfNeeded()', ->
       beforeEach ->
