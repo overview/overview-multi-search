@@ -1684,6 +1684,15 @@ body,
   overflow: hidden;
   line-height: 1.5rem;
 }
+.main > * {
+  max-width: 30rem;
+  margin: 0 auto;
+}
+@media (max-width: 46rem) {
+  .main > * {
+    margin-right: 8rem;
+  }
+}
 body {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
@@ -1711,7 +1720,7 @@ h2 {
 }
 .search-list-sort {
   font-size: .85rem;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #efefef;
 }
 .search-list-sort[data-n-searches="0"] {
   display: none;
@@ -1789,8 +1798,10 @@ ul.search-list-filters:not(:empty) {
   padding: 0;
 }
 li.search {
+  border-bottom: 1px solid #efefef;
   margin: 0;
   position: relative;
+  z-index: 1;
 }
 li.search .when-not-editing {
   padding: 1rem 0;
@@ -1800,7 +1811,10 @@ li.search:not(.selected) .actions {
   display: none;
 }
 li.search.selected {
-  background: #f5f5f5;
+  background: #f7f7f7;
+}
+li.search.selected .when-not-editing {
+  background: #f7f7f7;
 }
 li.search.editing > .when-not-editing {
   display: none;
@@ -1812,6 +1826,7 @@ li.search .count {
   float: right;
   width: 20%;
   color: #777777;
+  font-size: 1.2rem;
   padding-right: 1rem;
   text-align: right;
 }
@@ -1840,13 +1855,24 @@ li.search.selected .query h5 {
   font-weight: bold;
 }
 li.search .actions {
+  border-left: 1px solid #efefef;
+  z-index: -1;
+  border-radius: 6px;
+  margin-top: -1px;
+  position: absolute;
+  top: -0.9rem;
+  left: 100%;
+  margin-left: -1px;
+  white-space: nowrap;
   font-size: .85rem;
-  padding-left: .5rem;
+  line-height: 1.75rem;
 }
 li.search .actions i {
-  padding-right: .2rem;
+  width: 1.5em;
+  text-align: center;
 }
 li.search .actions a {
+  display: block;
   padding: 0 .5rem;
   opacity: .5;
 }
@@ -1854,13 +1880,12 @@ li.search .actions a:hover {
   opacity: 1;
 }
 li.search .when-editing {
-  margin-left: 10.5rem;
-  margin-right: 1rem;
-  padding: .5rem 0;
+  padding: .5rem;
 }
 li.search .when-editing .input-group {
   display: -webkit-flex;
   display: flex;
+  margin: -1px;
 }
 li.search .when-editing .input-group .form-control {
   -webkit-flex: 1 1 auto;
@@ -1868,11 +1893,25 @@ li.search .when-editing .input-group .form-control {
 }
 li.search .when-editing input,
 li.search .when-editing button {
-  padding: .5rem 1rem;
   font: inherit;
   line-height: inherit;
-  border: 0;
-  outline: 1px solid #dddddd;
+  border: 1px solid #efefef;
+  border-right: none;
+}
+li.search .when-editing input {
+  padding: .5rem;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  background: white;
+}
+li.search .when-editing button {
+  padding: .5rem .75rem;
+  background: white;
+}
+li.search .when-editing .input-group-btn:last-child button {
+  border-right: 1px solid #efefef;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 div.main {
   position: absolute;
@@ -1887,7 +1926,7 @@ div.source {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #f5f5f5;
+  background: #f7f7f7;
   z-index: 2;
 }
 div.source form {

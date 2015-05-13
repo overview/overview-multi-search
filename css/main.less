@@ -5,9 +5,9 @@
 @gray-light: #777;
 @gray-lighter: #eee;
 @text-muted: @gray-light;
-@border-color: #ddd;
+@border-color: #efefef;
 @border-radius-base: 4px;
-@well-bg: #f5f5f5;
+@well-bg: #f7f7f7;
 
 .list-unstyled() {
   list-style: none;
@@ -25,6 +25,18 @@ html, body, #app, .main {
   padding: 0;
   overflow: hidden;
   line-height: 1.5rem;
+}
+
+.main>* {
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+// The div.actions takes around 8rem, to be safe. So make sure margin-right
+// never drops below 8rem.
+
+@media (max-width: 46rem) {
+  .main>* { margin-right: 8rem; }
 }
 
 body {
@@ -131,11 +143,20 @@ li.search {
     cursor: pointer;
   }
 
+  border-bottom: 1px solid @border-color;
+
   margin: 0;
   position: relative;
+  z-index: 1; // so z-index -1 on action keeps us above the rest of the page
 
   &:not(.selected) .actions { display: none; }
-  &.selected { background: @well-bg; }
+  &.selected {
+    background: @well-bg;
+
+    .when-not-editing {
+      background: @well-bg; // So z-index -1 goes behind this color
+    }
+  }
 
   &.editing > .when-not-editing { display: none; }
   &:not(.editing) > .when-editing { display: none; }
@@ -144,6 +165,7 @@ li.search {
     float: right;
     width: 20%;
     color: @text-muted;
+    font-size: 1.2rem;
     padding-right: 1rem;
     text-align: right;
 
@@ -180,14 +202,25 @@ li.search {
   }
 
   .actions {
+    border-left: 1px solid @border-color;
+    z-index: -1;
+    border-radius: 6px;
+    margin-top: -1px;
+    position: absolute;
+    top: -.9rem;
+    left: 100%;
+    margin-left: -1px;
+    white-space: nowrap;
     font-size: .85rem;
-    padding-left: .5rem;
+    line-height: 1.75rem;
 
     i {
-      padding-right: .2rem;
+      width: 1.5em;
+      text-align: center;
     }
 
     a {
+      display: block;
       padding: 0 .5rem;
       opacity: .5;
     }
@@ -198,13 +231,12 @@ li.search {
   }
 
   .when-editing {
-    margin-left: 10.5rem;
-    margin-right: 1rem;
-    padding: .5rem 0;
+    padding: .5rem;
 
     .input-group {
       display: -webkit-flex;
       display: flex;
+      margin: -1px; // compensate for border
 
       .form-control {
         -webkit-flex: 1 1 auto;
@@ -213,11 +245,28 @@ li.search {
     }
 
     input, button {
-      padding: .5rem 1rem;
       font: inherit;
       line-height: inherit;
-      border: 0;
-      outline: 1px solid @border-color;
+      border: 1px solid @border-color;
+      border-right: none;
+    }
+
+    input {
+      padding: .5rem;
+      border-top-left-radius: @border-radius-base;
+      border-bottom-left-radius: @border-radius-base;
+      background: white;
+    }
+
+    button {
+      padding: .5rem .75rem;
+      background: white;
+    }
+
+    .input-group-btn:last-child button {
+      border-right: 1px solid @border-color;
+      border-top-right-radius: @border-radius-base;
+      border-bottom-right-radius: @border-radius-base;
     }
   }
 }

@@ -13,21 +13,6 @@
       .bounce2
       .bounce3
 
-  .actions
-    a.toggle-filter(href='#')
-      if typeof(filterPosition) === 'undefined' || filterPosition === null
-        i.fa.fa-filter
-        | Set as filter
-      else
-        i.fa.fa-filter
-        | Remove this filter
-    a.edit(href='#')
-      i.fa.fa-edit
-      | Edit
-    a.delete(href='#')
-      i.fa.fa-trash
-      | Delete
-
 .when-editing
   form(action='#', method='post', role='form')
     .input-group.input-group-sm
@@ -39,3 +24,18 @@
       span.input-group-btn
         button.btn.btn-default(type='reset')
           | Cancel
+
+.actions
+  a.toggle-filter(href='#')
+    if typeof(filterPosition) === 'undefined' || filterPosition === null
+      i.fa.fa-filter
+      | Set as filter
+    else
+      i.fa.fa-filter
+      | Remove this filter
+  a.edit(href='#')
+    i.fa.fa-edit
+    | Edit
+  a.delete(href='#')
+    i.fa.fa-trash
+    | Delete
