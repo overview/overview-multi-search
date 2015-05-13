@@ -21,6 +21,7 @@ module.exports = class SearchItemView extends Marionette.ItemView
 
   initialize: ->
     @listenTo(@model, 'change:filterPosition', @_onFilterPositionChanged)
+    @listenTo(@model, 'change:selected', @_refreshSelected)
     @_hasFilterPosition = false
 
   onClick: (e) ->
@@ -61,13 +62,12 @@ module.exports = class SearchItemView extends Marionette.ItemView
   onDelete: (e) ->
     e.preventDefault()
     e.stopPropagation()
-
-    if window.confirm('Are you sure you want to delete this search?')
-      @model.destroy()
+    @model.destroy()
 
   onRender: ->
     @_refreshStatus()
     @_refreshIsFilter()
+    @_refreshSelected()
 
   onToggleFilter: (e) ->
     e.preventDefault()
@@ -79,6 +79,9 @@ module.exports = class SearchItemView extends Marionette.ItemView
       @trigger('remove-filter', @model)
 
   _onFilterPositionChanged: -> @_refreshIsFilter()
+
+  _refreshSelected: ->
+    @$el.toggleClass('selected', @model.get('selected') || false)
 
   _refreshStatus: ->
     result = @model.getResult()

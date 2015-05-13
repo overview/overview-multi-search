@@ -81,6 +81,8 @@ module.exports = class App extends Backbone.View
       args: [ { q: query } ]
     }, global.server)
 
+    @searches.forEach((model) -> model.set(selected: model == search))
+
   _onAddFilter: (view, search) -> @searchList.addFilter(search)
   _onRemoveFilter: (view, search) -> @searchList.removeFilter(search)
   _onSelect: (view, search) -> @select(search)

@@ -72,23 +72,14 @@ module.exports = class SearchList extends Backbone.Model
 
   initialize: (attrs, options) ->
     throw 'Must pass options.searches, a Searches' if !options.searches?
-    @sortLater = options.sortLater if options.sortLater? # for unit tests
 
     @searches = options.searches
     @filters = new Backbone.Collection(@_findFiltersFromSearches(), {
       model: @searches.model
     })
 
-    @_refreshComparator()
-
     @listenTo(@searches, 'change:query', @_onSearchQueryChanged)
-    @listenTo(@searches, 'change:query change:nDocuments change:filterNDocuments reset fetch', @sortLater)
     @listenTo(@searches, 'add', @_onSearchAdded)
-
-    @_debouncedSortLater = _.throttle(@sort.bind(@), 250)
-
-  _refreshComparator: ->
-    @searches.comparator = Comparators[@get('sortKey')]
 
   ###
   Sets the sort key.
@@ -97,17 +88,8 @@ module.exports = class SearchList extends Backbone.Model
   call sort() to sort immediately.
   ###
   setSortKey: (sortKey) ->
-    if sortKey != @get('sortKey')
-      @set(sortKey: sortKey)
-      @_refreshComparator()
-      @sortLater()
-
-  ###
-  Indicates that the list has changed a bit and might need sorting.
-
-  SearchList will sort it later.
-  ###
-  sortLater: -> @_debouncedSortLater()
+    @set(sortKey: sortKey)
+    @sort()
 
   ###
   Sorts Searches by the given sortKey.
@@ -115,7 +97,10 @@ module.exports = class SearchList extends Backbone.Model
   We don't sort automatically because query, nDocuments and filterNDocuments
   impact the sort order, and they can change at any time.
   ###
-  sort: -> @searches.sort()
+  sort: ->
+    @searches.comparator = Comparators[@get('sortKey')]
+    @searches.sort()
+    @searches.comparator = null
 
   ###
   Returns the Filters as a String.

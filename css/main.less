@@ -1,83 +1,113 @@
-@import './vendor/bootstrap/bootstrap.less';
 @import './vendor/font-awesome/font-awesome.less';
 
-html, body, .container, #app {
+@brand-primary: #50ade5;
+@brand-danger: #d9534f;
+@gray-light: #777;
+@gray-lighter: #eee;
+@text-muted: @gray-light;
+@border-color: #ddd;
+@border-radius-base: 4px;
+@well-bg: #f5f5f5;
+
+.list-unstyled() {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #app, .main {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  line-height: 1.5rem;
+}
+
+body {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: @brand-primary;
+  text-decoration: none;
 }
 
 h2 {
-  font-size: 1.25em;
-  line-height: 1.5 / 1.25;
+  font-size: 1.25rem;
   padding: 0;
-  margin: .5em / 1.25 0 .5em / 1.25 0;
+  margin: .5rem 0;
 }
 
-.search-list-filters-footer { .text-muted(); }
+.search-list-filters-footer {
+  color: @text-muted;
+}
 
 .filter-list {
   &>* { display: none; }
   &>.filters-exist { display: block; }
+  a.edit, a.delete { display: none; }
 }
 
 .search-list-sort {
   &[data-n-searches="0"] { display: none; }
-
-  .sort {
-    display: -webkit-flex;
-    display: flex;
-    font-size: .85em;
-    line-height: 1.5 / .85;
-    border-bottom: 1px solid @table-border-color;
-  }
+  font-size: .85rem;
+  border-bottom: 1px solid @border-color;
 
   a {
     display: none;
     opacity: .5;
-    &::before {
-      content: "​"; // zero-width space to adjust text height
-    }
   }
 
-  a.sort-by-query {
-    -webkit-flex-grow: 1;
-    flex-grow: 1;
+  .sort {
+    display: -webkit-flex;
+    display: flex;
   }
 
-  a.sort-by-n-documents {
-    // Line up with count by creating an empty cell with the same width as
-    // everything that comes after.
-    //
-    // Unfortunately, we need two different fonts to do this, which means a
-    // dummy HTML entity. That's the i.spacing.
+  .sort-asc::before {
+    font-family: FontAwesome;
+    content: @fa-var-sort-desc;
+    padding-right: .25rem;
+    display: none;
+  }
 
-    i.spacing::after {
-      opacity: 0;
-      padding-right: 3.85em; // Calculated this by eyeing it
-      font-style: normal;
-      content: "Set as filterEditDelete";
-    }
+  .sort-desc::before {
+    font-family: FontAwesome;
+    content: @fa-var-sort-asc;
+    padding-right: .25rem;
+    display: none;
+  }
 
-    &::after {
-      opacity: 0;
-      font-family: FontAwesome;
-      content: "@{fa-var-filter}@{fa-var-edit}@{fa-var-trash}";
-    }
+  .sort-by-n-documents {
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: 20%;
+    padding-right: 1rem;
+    text-align: right;
+  }
+
+  .sort-by-query {
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
   }
 
   &.sort-by-n-documents-desc {
-    a.sort-by-n-documents-asc::before { font-family: FontAwesome; content: @fa-var-sort-asc; padding-right: .25em; }
+    a.sort-by-n-documents-asc::before { display: inline; }
     a.sort-by-n-documents-asc, a.sort-by-query-asc { display: block; }
   }
   &.sort-by-n-documents-asc {
-    a.sort-by-n-documents-desc::before { font-family: FontAwesome; content: @fa-var-sort-desc; padding-right: .25em; }
+    a.sort-by-n-documents-desc::before { display: inline; }
     a.sort-by-n-documents-desc, a.sort-by-query-asc { display: block; }
   }
   &.sort-by-query-asc {
-    a.sort-by-query-desc::before { font-family: FontAwesome; content: @fa-var-sort-asc; padding-right: .25em; }
+    a.sort-by-query-desc::before { display: inline; }
     a.sort-by-query-desc, a.sort-by-n-documents-desc { display: block; }
   }
   &.sort-by-query-desc {
-    a.sort-by-query-asc::before { font-family: FontAwesome; content: @fa-var-sort-desc; padding-right: .25em; }
+    a.sort-by-query-asc::before { display: inline; }
     a.sort-by-query-asc, a.sort-by-n-documents-desc { display: block; }
   }
 }
@@ -95,91 +125,110 @@ ul.search-list-filters:not(:empty) {
   border-radius: @border-radius-base;
   background: #f5f5f5;
   padding: 0;
-
-  li.search {
-    padding-left: 1em;
-    padding-right: 1em;
-  }
 }
 
 li.search {
   .when-not-editing {
+    padding: 1rem 0;
     cursor: pointer;
     display: -webkit-flex;
     display: flex;
   }
 
-  padding: .25em 0;
   margin: 0;
+  position: relative;
+
+  &:not(.selected) .actions { display: none; }
+  &.selected { background: @well-bg; }
 
   &.editing > .when-not-editing { display: none; }
   &:not(.editing) > .when-editing { display: none; }
 
-  span.count {
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-    font-size: 1.2em;
-    line-height: 1.5 / 1.2;
-    color: @link-color;
-    padding: 0 .5em;
-    text-align: right; // useful especially for errors
+  .count {
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: 20%;
+    color: @text-muted;
+    padding-right: 1rem;
+    text-align: right;
+
+    &.error {
+      color: @brand-danger;
+      font-weight: normal;
+      font-size: .85rem;
+    }
   }
 
-  span.error {
-    -webkit-flex-shrink: 1;
-    flex-shrink: 1;
-    color: @brand-danger;
-    font-size: .75em;
-    line-height: 1.5 / .75; // wrap to two lines
-    padding: 0 .5em / .75;
-  }
-
-  h5 {
+  .query {
     -webkit-flex: 1 1 auto;
     flex: 1 1 auto;
-    font-size: 1.2em;
-    line-height: 1.5 / 1.2;
-    font-weight: bold;
-    padding: 0;
-    margin: 0;
+
+    padding-right: 1rem;
+
+    h5 {
+      display: inline;
+      font-size: 1em;
+      font-weight: normal;
+      padding: 0;
+      margin: 0;
+      margin-right: 1rem;
+    }
   }
 
-  &:hover {
-    h5, span.count:not(.error) {
-      text-decoration: underline;
-      color: @link-hover-color;
+  &.selected {
+    .count {
+      font-weight: bold;
+    }
+
+    .query h5 {
+      font-weight: bold;
     }
   }
 
   .actions {
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-    font-size: .85em;
-    line-height: 1.5 / .85;
-    white-space: nowrap;
-    margin-right: -.5em;
+    float: right;
+    font-size: .85rem;
 
     i {
-      padding-right: .2em;
+      padding-right: .2rem;
     }
 
     a {
-      padding: 0 .5em;
+      padding: 0 .5rem;
       opacity: .5;
-    }
-
-    .delete {
-      color: @brand-danger;
     }
 
     a:hover {
       opacity: 1;
     }
   }
+
+  .when-editing {
+    margin-left: 10.5rem;
+    margin-right: 1rem;
+    padding: .5rem 0;
+
+    .input-group {
+      display: -webkit-flex;
+      display: flex;
+
+      .form-control {
+        -webkit-flex: 1 1 auto;
+        flex: 1 1 auto;
+      }
+    }
+
+    input, button {
+      padding: .5rem 1rem;
+      font: inherit;
+      line-height: inherit;
+      border: 0;
+      outline: 1px solid @border-color;
+    }
+  }
 }
 
 div.main {
-  .container();
   position: absolute;
   top: 0;
   height: 100%;
@@ -236,7 +285,7 @@ div.source {
 .spinner > div {
   width: 18px;
   height: 18px;
-  background-color: @gray-light;
+  background-color: @gray-lighter;
 
   border-radius: 100%;
   display: inline-block;
@@ -269,5 +318,12 @@ div.source {
   } 40% {
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
+  }
+}
+
+.new-search {
+  form {
+    margin: 0;
+    padding: 0;
   }
 }
