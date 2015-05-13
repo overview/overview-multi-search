@@ -81,17 +81,15 @@ h2 {
     display: none;
   }
 
-  .sort-by-n-documents {
-    -webkit-flex: 0 0 auto;
-    flex: 0 0 auto;
-    width: 20%;
-    padding-right: 1rem;
-    text-align: right;
-  }
-
   .sort-by-query {
     -webkit-flex: 1 1 auto;
     flex: 1 1 auto;
+    padding-left: 1rem;
+  }
+
+  .sort-by-n-documents {
+    padding-right: 1rem;
+    text-align: right;
   }
 
   &.sort-by-n-documents-desc {
@@ -131,8 +129,6 @@ li.search {
   .when-not-editing {
     padding: 1rem 0;
     cursor: pointer;
-    display: -webkit-flex;
-    display: flex;
   }
 
   margin: 0;
@@ -145,8 +141,7 @@ li.search {
   &:not(.editing) > .when-editing { display: none; }
 
   .count {
-    -webkit-flex: 0 0 auto;
-    flex: 0 0 auto;
+    float: right;
     width: 20%;
     color: @text-muted;
     padding-right: 1rem;
@@ -160,10 +155,9 @@ li.search {
   }
 
   .query {
-    -webkit-flex: 1 1 auto;
-    flex: 1 1 auto;
-
+    display: inline-block;
     padding-right: 1rem;
+    padding-left: 1rem;
 
     h5 {
       display: inline;
@@ -186,8 +180,8 @@ li.search {
   }
 
   .actions {
-    float: right;
     font-size: .85rem;
+    padding-left: .5rem;
 
     i {
       padding-right: .2rem;

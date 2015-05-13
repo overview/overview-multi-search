@@ -1,4 +1,8 @@
 .when-not-editing
+  .query
+    h5
+      a.object(href='#')= query
+
   if nDocuments !== null
     .count.object(href="#")= nDocuments.toLocaleString()
   else if error !== null
@@ -9,24 +13,20 @@
       .bounce2
       .bounce3
 
-  .query
-    h5
-      a.object(href='#')= query
-
-    .actions
-      a.toggle-filter(href='#')
-        if typeof(filterPosition) === 'undefined' || filterPosition === null
-          i.fa.fa-filter
-          | Set as filter
-        else
-          i.fa.fa-filter
-          | Remove this filter
-      a.edit(href='#')
-        i.fa.fa-edit
-        | Edit
-      a.delete(href='#')
-        i.fa.fa-trash
-        | Delete
+  .actions
+    a.toggle-filter(href='#')
+      if typeof(filterPosition) === 'undefined' || filterPosition === null
+        i.fa.fa-filter
+        | Set as filter
+      else
+        i.fa.fa-filter
+        | Remove this filter
+    a.edit(href='#')
+      i.fa.fa-edit
+      | Edit
+    a.delete(href='#')
+      i.fa.fa-trash
+      | Delete
 
 .when-editing
   form(action='#', method='post', role='form')
