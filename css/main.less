@@ -20,6 +20,9 @@
   padding: 0;
 }
 
+// A little bit of reset...
+* { font: inherit; }
+
 // A little bit of Bootstrap cloning...
 .input-group {
   display: -webkit-flex;
@@ -45,7 +48,6 @@
 
   button {
     border-left: 0;
-    padding: .5rem .75rem;
   }
 
   .input-group-btn:last-child button {
@@ -73,6 +75,18 @@
 .btn {
   background: white;
   cursor: pointer;
+  padding: .5rem .75rem;
+  color: @input-color;
+  background: @input-bg;
+  border: 1px solid @input-border;
+
+  &:focus {
+    @color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+    border-color: @input-border-focus;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @color-rgba;
+    z-index: 2;
+  }
 }
 
 .btn-primary {
@@ -82,6 +96,23 @@
 
   &:hover {
     background: @brand-primary-hover;
+  }
+}
+
+.btn-group {
+  &>* {
+    border-left-width: 0;
+  }
+
+  &>:first-child {
+    border-top-left-radius: @border-radius-base;
+    border-bottom-left-radius: @border-radius-base;
+    border-left-width: 1px;
+  }
+
+  &>:last-child {
+    border-top-right-radius: @border-radius-base;
+    border-bottom-right-radius: @border-radius-base;
   }
 }
 
@@ -98,7 +129,12 @@ html, body, #app, .main {
   line-height: 1.5rem;
 }
 
+.main {
+  overflow-y: auto;
+}
+
 .main>* {
+  display: block;
   max-width: 30rem;
   margin: 0 auto;
 }
@@ -119,10 +155,11 @@ a {
   text-decoration: none;
 }
 
-h2 {
+.main>h2 {
   font-size: 1.25rem;
   padding: 0;
-  margin: .5rem 0;
+  margin-top: .75rem;
+  margin-bottom: .75rem;
 }
 
 .search-list-filters-footer {
@@ -138,7 +175,6 @@ h2 {
 .search-list-sort {
   &[data-n-searches="0"] { display: none; }
   font-size: .85rem;
-  border-bottom: 1px solid @border-color;
 
   a {
     display: none;
@@ -214,13 +250,12 @@ li.search {
     cursor: pointer;
   }
 
-  border-bottom: 1px solid @border-color;
+  border-top: 1px solid @border-color;
 
   margin: 0;
   position: relative;
   z-index: 1; // so z-index -1 on action keeps us above the rest of the page
 
-  &:not(.selected) .actions { display: none; }
   &.selected {
     background: @well-bg;
 
@@ -270,34 +305,9 @@ li.search {
     .query h5 {
       font-weight: bold;
     }
-  }
 
-  .actions {
-    border-left: 1px solid @border-color;
-    z-index: -1;
-    border-radius: 6px;
-    margin-top: -1px;
-    position: absolute;
-    top: -.9rem;
-    left: 100%;
-    margin-left: -1px;
-    white-space: nowrap;
-    font-size: .85rem;
-    line-height: 1.75rem;
-
-    i {
-      width: 1.5em;
-      text-align: center;
-    }
-
-    a {
+    &:not(.editing) .actions {
       display: block;
-      padding: 0 .5rem;
-      opacity: .5;
-    }
-
-    a:hover {
-      opacity: 1;
     }
   }
 
@@ -310,12 +320,62 @@ li.search {
   }
 }
 
-div.main {
+li.search .actions {
+  font-size: .85rem;
+  white-space: nowrap;
+
+  i {
+    width: 1.5em;
+    text-align: center;
+  }
+
+  a { opacity: .5; }
+  a:hover { opacity: 1; }
+}
+
+ul.searches li.search .actions {
+  border-left: 1px solid @border-color;
+  z-index: -1;
+  border-radius: 6px;
+  margin-top: -1px;
   position: absolute;
-  top: 0;
-  height: 100%;
-  overflow: auto;
-  overflow-x: hidden;
+  top: -.9rem;
+  left: 100%;
+  margin-left: -1px;
+  display: none;
+  line-height: 1.75rem;
+
+  a {
+    display: block;
+    padding: 0 .5rem;
+  }
+}
+
+ul.search-list-filters li.search {
+  display: -webkit-flex;
+  display: flex;
+
+  .when-not-editing {
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+  }
+
+  .actions {
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding: 1rem 1rem 1rem 0;
+
+    .edit, .delete { display: none; }
+  }
+}
+
+.main>.search-form {
+  margin-top: 1.5rem;
+  label { display: none; }
+}
+
+.main>.edit-source {
+  margin-top: 1.5rem;
 }
 
 div.source {
@@ -332,7 +392,9 @@ div.source {
     display: flex;
     -webkit-flex-direction: column;
     flex-direction: column;
-    margin: 0;
+    max-width: 28rem;
+    padding: 0 1rem;
+    margin: 0 auto;
     height: 100%;
   }
 
@@ -348,6 +410,9 @@ div.source {
       display: block;
       -webkit-flex: 0 0 auto;
       flex: 0 0 auto;
+      box-sizing: border-box;
+      border-top: .75rem solid transparent;
+      border-bottom: .75rem solid transparent;
     }
 
     textarea {
@@ -360,6 +425,9 @@ div.source {
   .btn-group {
     -webkit-flex: 0 0 auto;
     flex: 0 0 auto;
+    box-sizing: border-box;
+    border-top: .75rem solid transparent;
+    border-bottom: .75rem solid transparent;
   }
 }
 

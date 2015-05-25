@@ -1670,6 +1670,9 @@
 .fa-meanpath:before {
   content: "\f20c";
 }
+* {
+  font: inherit;
+}
 .input-group {
   display: -webkit-flex;
   display: flex;
@@ -1692,7 +1695,6 @@
 }
 .input-group button {
   border-left: 0;
-  padding: .5rem .75rem;
 }
 .input-group .input-group-btn:last-child button {
   border-top-right-radius: 4px;
@@ -1712,8 +1714,17 @@
   z-index: 2;
 }
 .btn {
-  background: white;
   cursor: pointer;
+  padding: .5rem .75rem;
+  color: #555555;
+  background: white;
+  border: 1px solid #cccccc;
+}
+.btn:focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  z-index: 2;
 }
 .btn-primary {
   background: #50ade5;
@@ -1722,6 +1733,18 @@
 }
 .btn-primary:hover {
   background: #6ab9e9;
+}
+.btn-group > * {
+  border-left-width: 0;
+}
+.btn-group > :first-child {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-left-width: 1px;
+}
+.btn-group > :last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 html,
 body,
@@ -1737,7 +1760,11 @@ body,
   overflow: hidden;
   line-height: 1.5rem;
 }
+.main {
+  overflow-y: auto;
+}
 .main > * {
+  display: block;
   max-width: 30rem;
   margin: 0 auto;
 }
@@ -1753,10 +1780,11 @@ a {
   color: #50ade5;
   text-decoration: none;
 }
-h2 {
+.main > h2 {
   font-size: 1.25rem;
   padding: 0;
-  margin: .5rem 0;
+  margin-top: .75rem;
+  margin-bottom: .75rem;
 }
 .search-list-filters-footer {
   color: #777777;
@@ -1773,7 +1801,6 @@ h2 {
 }
 .search-list-sort {
   font-size: .85rem;
-  border-bottom: 1px solid #efefef;
 }
 .search-list-sort[data-n-searches="0"] {
   display: none;
@@ -1851,7 +1878,7 @@ ul.search-list-filters:not(:empty) {
   padding: 0;
 }
 li.search {
-  border-bottom: 1px solid #efefef;
+  border-top: 1px solid #efefef;
   margin: 0;
   position: relative;
   z-index: 1;
@@ -1859,9 +1886,6 @@ li.search {
 li.search .when-not-editing {
   padding: 1rem 0;
   cursor: pointer;
-}
-li.search:not(.selected) .actions {
-  display: none;
 }
 li.search.selected {
   background: #f7f7f7;
@@ -1907,7 +1931,30 @@ li.search.selected .count {
 li.search.selected .query h5 {
   font-weight: bold;
 }
+li.search.selected:not(.editing) .actions {
+  display: block;
+}
+li.search .when-editing {
+  padding: .5rem;
+}
+li.search .when-editing .input-group {
+  margin: -1px;
+}
 li.search .actions {
+  font-size: .85rem;
+  white-space: nowrap;
+}
+li.search .actions i {
+  width: 1.5em;
+  text-align: center;
+}
+li.search .actions a {
+  opacity: .5;
+}
+li.search .actions a:hover {
+  opacity: 1;
+}
+ul.searches li.search .actions {
   border-left: 1px solid #efefef;
   z-index: -1;
   border-radius: 6px;
@@ -1916,34 +1963,38 @@ li.search .actions {
   top: -0.9rem;
   left: 100%;
   margin-left: -1px;
-  white-space: nowrap;
-  font-size: .85rem;
+  display: none;
   line-height: 1.75rem;
 }
-li.search .actions i {
-  width: 1.5em;
-  text-align: center;
-}
-li.search .actions a {
+ul.searches li.search .actions a {
   display: block;
   padding: 0 .5rem;
-  opacity: .5;
 }
-li.search .actions a:hover {
-  opacity: 1;
+ul.search-list-filters li.search {
+  display: -webkit-flex;
+  display: flex;
 }
-li.search .when-editing {
-  padding: .5rem;
+ul.search-list-filters li.search .when-not-editing {
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
-li.search .when-editing .input-group {
-  margin: -1px;
+ul.search-list-filters li.search .actions {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  padding: 1rem 1rem 1rem 0;
 }
-div.main {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  overflow: auto;
-  overflow-x: hidden;
+ul.search-list-filters li.search .actions .edit,
+ul.search-list-filters li.search .actions .delete {
+  display: none;
+}
+.main > .search-form {
+  margin-top: 1.5rem;
+}
+.main > .search-form label {
+  display: none;
+}
+.main > .edit-source {
+  margin-top: 1.5rem;
 }
 div.source {
   position: absolute;
@@ -1959,7 +2010,9 @@ div.source form {
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
-  margin: 0;
+  max-width: 28rem;
+  padding: 0 1rem;
+  margin: 0 auto;
   height: 100%;
 }
 div.source .form-group {
@@ -1974,6 +2027,9 @@ div.source .form-group label {
   display: block;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
+  box-sizing: border-box;
+  border-top: .75rem solid transparent;
+  border-bottom: .75rem solid transparent;
 }
 div.source .form-group textarea {
   display: block;
@@ -1983,6 +2039,9 @@ div.source .form-group textarea {
 div.source .btn-group {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
+  box-sizing: border-box;
+  border-top: .75rem solid transparent;
+  border-bottom: .75rem solid transparent;
 }
 .spinner > div {
   width: 18px;
