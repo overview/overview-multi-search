@@ -10,12 +10,17 @@ module.exports = class SearchFormView extends Backbone.View
 
   render: ->
     @$el.html(@template())
+    @ui =
+      form: @$('form')
+      query: @$('input[name=query]')
 
   onSubmit: (e) ->
     e.preventDefault()
 
-    query = @$('input[name=query]').val().trim()
+    query = @ui.query.val().trim()
 
     if query
       @trigger('create', query: query)
-      @$('form')[0].reset()
+      @ui.form[0].reset()
+
+    @ui.query.focus()

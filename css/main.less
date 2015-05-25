@@ -1,7 +1,12 @@
 @import './vendor/font-awesome/font-awesome.less';
 
 @brand-primary: #50ade5;
+@brand-primary-hover: #6ab9e9;
 @brand-danger: #d9534f;
+@input-bg: white;
+@input-border: #ccc;
+@input-border-focus: #66afe9;
+@input-color: #555;
 @gray-light: #777;
 @gray-lighter: #eee;
 @text-muted: @gray-light;
@@ -15,6 +20,72 @@
   padding: 0;
 }
 
+// A little bit of Bootstrap cloning...
+.input-group {
+  display: -webkit-flex;
+  display: flex;
+
+  .form-control {
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+  }
+
+  input, button {
+    font: inherit;
+    line-height: inherit;
+    border: 1px solid @input-border;
+  }
+
+  input {
+    position: relative; // rise above the button on focus
+    padding: .5rem;
+    border-top-left-radius: @border-radius-base;
+    border-bottom-left-radius: @border-radius-base;
+  }
+
+  button {
+    border-left: 0;
+    padding: .5rem .75rem;
+  }
+
+  .input-group-btn:last-child button {
+    border-top-right-radius: @border-radius-base;
+    border-bottom-right-radius: @border-radius-base;
+  }
+}
+
+.form-control {
+  color: @input-color;
+  background: @input-bg;
+  border: 1px solid @input-border;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+  &:focus {
+    @color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+    border-color: @input-border-focus;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @color-rgba;
+    z-index: 2;
+  }
+}
+
+.btn {
+  background: white;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: @brand-primary;
+  color: white;
+  text-shadow: 0 0 2px black;
+
+  &:hover {
+    background: @brand-primary-hover;
+  }
+}
+
+// Now, the app-specific stuff
 html, body, #app, .main {
   position: absolute;
   top: 0;
@@ -234,39 +305,7 @@ li.search {
     padding: .5rem;
 
     .input-group {
-      display: -webkit-flex;
-      display: flex;
       margin: -1px; // compensate for border
-
-      .form-control {
-        -webkit-flex: 1 1 auto;
-        flex: 1 1 auto;
-      }
-    }
-
-    input, button {
-      font: inherit;
-      line-height: inherit;
-      border: 1px solid @border-color;
-      border-right: none;
-    }
-
-    input {
-      padding: .5rem;
-      border-top-left-radius: @border-radius-base;
-      border-bottom-left-radius: @border-radius-base;
-      background: white;
-    }
-
-    button {
-      padding: .5rem .75rem;
-      background: white;
-    }
-
-    .input-group-btn:last-child button {
-      border-right: 1px solid @border-color;
-      border-top-right-radius: @border-radius-base;
-      border-bottom-right-radius: @border-radius-base;
     }
   }
 }

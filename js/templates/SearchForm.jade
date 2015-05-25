@@ -1,9 +1,8 @@
 form.new-search(action='#', method='post', role='form')
   .form-group
-    label.sr-only(for='new-search-name') Search for
+    label.sr-only(for='new-search-query') Search for
     .input-group
-      input.form-control#new-search-query(name='query', placeholder='Person, place, thing or action')
+      input.form-control#new-search-query(name='query', placeholder='Person, place, thing or action', autocomplete='off')
       span.input-group-btn
         button.btn.btn-primary(type='submit')
-          i.fa.fa-search
-          | Search
+          <i class="fa fa-search"></i> Search

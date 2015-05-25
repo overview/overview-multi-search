@@ -1670,6 +1670,59 @@
 .fa-meanpath:before {
   content: "\f20c";
 }
+.input-group {
+  display: -webkit-flex;
+  display: flex;
+}
+.input-group .form-control {
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.input-group input,
+.input-group button {
+  font: inherit;
+  line-height: inherit;
+  border: 1px solid #cccccc;
+}
+.input-group input {
+  position: relative;
+  padding: .5rem;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.input-group button {
+  border-left: 0;
+  padding: .5rem .75rem;
+}
+.input-group .input-group-btn:last-child button {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.form-control {
+  color: #555555;
+  background: white;
+  border: 1px solid #cccccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  z-index: 2;
+}
+.btn {
+  background: white;
+  cursor: pointer;
+}
+.btn-primary {
+  background: #50ade5;
+  color: white;
+  text-shadow: 0 0 2px black;
+}
+.btn-primary:hover {
+  background: #6ab9e9;
+}
 html,
 body,
 #app,
@@ -1883,35 +1936,7 @@ li.search .when-editing {
   padding: .5rem;
 }
 li.search .when-editing .input-group {
-  display: -webkit-flex;
-  display: flex;
   margin: -1px;
-}
-li.search .when-editing .input-group .form-control {
-  -webkit-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
-li.search .when-editing input,
-li.search .when-editing button {
-  font: inherit;
-  line-height: inherit;
-  border: 1px solid #efefef;
-  border-right: none;
-}
-li.search .when-editing input {
-  padding: .5rem;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  background: white;
-}
-li.search .when-editing button {
-  padding: .5rem .75rem;
-  background: white;
-}
-li.search .when-editing .input-group-btn:last-child button {
-  border-right: 1px solid #efefef;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
 }
 div.main {
   position: absolute;
