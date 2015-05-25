@@ -37,7 +37,7 @@ module.exports = class SourceView extends Backbone.View
     toAdd = ({ query: query } for query, __ of queriesSet when query not of oldQueries)
 
     model.destroy() for model in toRemove
-    @collection.add(toAdd)
+    @collection.create(props) for props in toAdd
 
     @trigger('done')
 
