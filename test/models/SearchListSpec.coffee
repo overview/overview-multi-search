@@ -22,7 +22,7 @@ describe 'models/SearchList', ->
     @search1.setFilter = sinon.spy()
     @search2.setFilter = sinon.spy()
 
-    @subject = new SearchList({}, searches: @searches, sortLater: sinon.spy())
+    @subject = new SearchList({}, searches: @searches, sort: sinon.spy())
     @filters = @subject.filters
 
   afterEach ->
@@ -38,11 +38,8 @@ describe 'models/SearchList', ->
     @search1.set(filterPosition: 1)
     @search2.set(filterPosition: 0)
 
-    subject2 = new SearchList({}, searches: @searches, sortLater: sinon.spy())
+    subject2 = new SearchList({}, searches: @searches, sort: sinon.spy())
     expect(subject2.filters.pluck('id')).to.deep.eq([ 'cde', 'bcd' ])
-
-  it 'should set @searches.comparator by default, so add() sorts immediately', ->
-    expect(@searches.comparator).to.exist
 
   describe '#defaults', ->
     it 'should have sortKey=query-asc', ->
@@ -53,37 +50,10 @@ describe 'models/SearchList', ->
       @subject.setSortKey('n-documents-desc')
       expect(@subject.get('sortKey')).to.eq('n-documents-desc')
 
-    it 'should call sortLater()', ->
-      @subject.sortLater = sinon.spy()
+    it 'should call sort()', ->
+      @subject.sort = sinon.spy()
       @subject.setSortKey('n-documents-desc')
-      expect(@subject.sortLater).to.have.been.called
-
-    it 'should set @searches.comparator, so add() sorts immediately', ->
-      comparator1 = @subject.comparator
-      @subject.setSortKey('n-documents-desc')
-      expect(@searches.comparator).not.to.eq(comparator1)
-
-  describe '#sortLater()', ->
-    it 'should not call sortLater() when the sort key does not change', ->
-      @subject.setSortKey(@subject.get('sortKey'))
-      expect(@subject.sortLater).not.to.have.been.called
-
-    it 'should call sortLater() when the query changes', ->
-      @search0.set(query: 'q0-1')
-      expect(@subject.sortLater).to.have.been.called
-
-    it 'should call sortLater() on fetch', ->
-      @searches.trigger('fetch')
-      expect(@subject.sortLater).to.have.been.called
-
-    it 'should call sortLater() on reset', ->
-      @searches.trigger('fetch')
-      expect(@subject.sortLater).to.have.been.called
-
-    it 'should not call sortLater() on add()', ->
-      # We use the comparator for add(), not sortLater()
-      @searches.add(new Search(id: 4, query: 'q4'))
-      expect(@subject.sortLater).not.to.have.been.called
+      expect(@subject.sort).to.have.been.called
 
   describe '#addFilter', ->
     it 'should add to the empty list', ->

@@ -2,6 +2,17 @@ Backbone = require('backbone')
 Search = require('../../js/models/Search')
 
 describe 'Search', ->
+  beforeEach ->
+    @sandbox = sinon.sandbox.create()
+    @sandbox.stub(Backbone, 'ajax')
+    @sandbox.stub(Search.prototype, 'save', (args...) -> Search.prototype.set.apply(@, args))
+    @subject = new Search(id: 'id', query: 'q1')
+    @subject.collection = { documentSetId: 'dsid', server: 'http://server' }
+
+  afterEach ->
+    @subject.off()
+    @sandbox.restore()
+
   describe '#parse', ->
     it 'should grab id and query', ->
       ret = Search.prototype.parse(id: 'i1', json: { query: 'q1' })
@@ -9,16 +20,6 @@ describe 'Search', ->
       expect(ret.query).to.eq('q1')
 
   describe 'with a typical Search', ->
-    beforeEach ->
-      @sandbox = sinon.sandbox.create()
-      @sandbox.stub(Backbone, 'ajax')
-      @subject = new Search(id: 'id', query: 'q1')
-      @subject.collection = { documentSetId: 'dsid', server: 'http://server' }
-
-    afterEach ->
-      @subject.off()
-      @sandbox.restore()
-
     it 'should have nDocuments=null', ->
       expect(@subject.get('nDocuments')).to.be.null
 
@@ -45,7 +46,7 @@ describe 'Search', ->
         @subject.refresh()
         expect(Backbone.ajax.firstCall.args[0]).to.have.property(
           'url',
-          'http://server/api/v1/document-sets/dsid/documents?fields=id&q=q1'
+          'http://server/api/v1/document-sets/dsid/documents?fields=id&q=q1&refresh=true'
         )
 
       it 'should urlEncode the query in the URL', ->
@@ -53,7 +54,7 @@ describe 'Search', ->
         @subject.refresh()
         expect(Backbone.ajax.firstCall.args[0]).to.have.property(
           'url',
-          'http://server/api/v1/document-sets/dsid/documents?fields=id&q=foo%20bar%5B%5D'
+          'http://server/api/v1/document-sets/dsid/documents?fields=id&q=foo%20bar%5B%5D&refresh=true'
         )
 
       it 'should set nDocuments on success', ->
@@ -92,7 +93,7 @@ describe 'Search', ->
           @subject.refresh()
           expect(Backbone.ajax.firstCall.args[0]).to.have.property(
             'url',
-            'http://server/api/v1/document-sets/dsid/documents?fields=id&q=(f1)%20AND%20(f2)%20AND%20(q1)'
+            'http://server/api/v1/document-sets/dsid/documents?fields=id&q=(f1)%20AND%20(f2)%20AND%20(q1)&refresh=true'
           )
 
         it 'should set filterNDocuments on success', ->
