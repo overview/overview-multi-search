@@ -21,7 +21,7 @@ module.exports = class Search extends Backbone.Model
   ###
   setQuery: (query) ->
     if query != @get('query')
-      @set
+      @save
         query: query
         error: null
         nDocuments: null
