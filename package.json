@@ -47,5 +47,10 @@
     "supervisor": "^0.6.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.1.2"
+  },
+  "dependencies": {
+    "coffee-script": "^1.9.3",
+    "express": "^4.13.3",
+    "morgan": "^1.6.1"
   }
 }

@@ -1,0 +1,10 @@
+.git
+.gitignore
+css
+gulpfile*
+jade
+js
+node_modules
+public
+test
+*~

@@ -14,6 +14,6 @@ app.use (req, res, next) ->
 
 app.use(express.static('dist'))
 
-port = parseInt(process.env.PORT, 10) || 9001
+port = parseInt(process.env.PORT, 10) || 3000
 app.listen(port)
 console.log("Listening on http://localhost:#{port}")
