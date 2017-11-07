@@ -8,7 +8,6 @@ RUN cd /opt/app && npm install --production
 # From here we load our application's code in, therefore the previous docker
 # "layer" thats been cached will be used if possible
 COPY server.js /opt/app/
-COPY app /opt/app/app
 COPY dist /opt/app/dist
 
 ENV PORT 80

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Saves and organizes searches within an Overview document set",
   "scripts": {
-    "start": "node_modules/.bin/coffee app/main.coffee",
+    "start": "node server.js",
     "dev": "node_modules/.bin/gulp server",
     "test": "node_modules/.bin/mocha"
   },
@@ -46,7 +46,6 @@
     "watchify": "^3.1.2"
   },
   "dependencies": {
-    "coffee-script": "^1.12.7",
     "express": "^4.13.3",
     "morgan": "^1.6.1"
   }
