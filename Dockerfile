@@ -13,5 +13,6 @@ COPY dist /opt/app/dist
 
 ENV PORT 80
 EXPOSE 80
+WORKDIR /opt/app
 CMD /usr/local/bin/node /opt/app/server.js
 
