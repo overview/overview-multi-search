@@ -1,7 +1,7 @@
 $ = require('jquery')
 Marionette = require('backbone.marionette')
 
-module.exports = class SearchItemView extends Marionette.ItemView
+module.exports = class SearchItemView extends Marionette.View
   tagName: 'li'
   className: 'search'
 

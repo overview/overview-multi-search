@@ -5,7 +5,7 @@ describe 'Search', ->
   beforeEach ->
     @sandbox = sinon.sandbox.create()
     @sandbox.stub(Backbone, 'ajax')
-    @sandbox.stub(Search.prototype, 'save', (args...) -> Search.prototype.set.apply(@, args))
+    @sandbox.stub(Search.prototype, 'save').callsFake((args...) -> Search.prototype.set.apply(@, args))
     @subject = new Search(id: 'id', query: 'q1')
     @subject.collection = { documentSetId: 'dsid', server: 'http://server' }
 

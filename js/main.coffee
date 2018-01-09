@@ -4,35 +4,25 @@ $ = Backbone.$ = require('jquery')
 App = require('./app')
 Searches = require('./collections/Searches')
 
-queryString = (->
-  map = {}
-
-  list = window.location.search
-    .split(/[\?&]/g)
-    .map((x) -> x.split('=', 2))
-
-  for x in list
-    map[decodeURIComponent(x[0])] = decodeURIComponent(x[1])
-
-  map
-)()
+searchParams = (new URL(document.location)).searchParams
+queryString =
+  origin: searchParams.get('origin')
+  documentSetId: searchParams.get('documentSetId')
+  apiToken: searchParams.get('apiToken')
 
 $.ajaxSetup
   beforeSend: (xhr, options) ->
-    if options.url.substring(0, queryString.server.length) == queryString.server
-      xhr.setRequestHeader('Authorization', "Basic #{new Buffer("" + queryString.apiToken + ":x-auth-token").toString('base64')}")
+    if options.url.substring(0, queryString.origin.length + 1) == queryString.origin + '/'
+      xhr.setRequestHeader('Authorization', "Basic #{window.btoa('' + queryString.apiToken + ':x-auth-token')}")
 
-global.server = queryString.server
+searches = new Searches([], {
+  server: queryString.origin
+  documentSetId: queryString.documentSetId
+})
+searches.fetch()
 
-$ ->
-  searches = new Searches([], {
-    server: queryString.server
-    documentSetId: queryString.documentSetId
-  })
-  searches.fetch()
-
-  app = new App
-    el: $('#app')[0]
-    searches: searches
-    documentSetId: queryString.documentSetId
-  app.render()
+app = new App
+  el: document.querySelector('#app')
+  searches: searches
+  documentSetId: queryString.documentSetId
+app.render()

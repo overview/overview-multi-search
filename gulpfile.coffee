@@ -1,3 +1,6 @@
+childProcess = require('child_process')
+exorcist = require('exorcist')
+fs = require('fs')
 gulp = require('gulp')
 gutil = require('gulp-util')
 jade = require('gulp-jade')
@@ -5,66 +8,91 @@ less = require('gulp-less')
 plumber = require('gulp-plumber')
 rename = require('gulp-rename')
 rimraf = require('gulp-rimraf')
-source = require('vinyl-source-stream')
 supervisor = require('gulp-supervisor')
 
 browserify = require('browserify')
 watchify = require('watchify')
-browserifyJade = require('browserify-jade')
+pugify = require('pugify')
 
 uploadToAws = (done) ->
-  s3 = require('s3')
-  client = s3.createClient()
-  upload = client.uploadDir
-    localDir: 'dist'
-    deleteRemoved: true
-    s3Params:
-      Bucket: 'overview-multi-search'
-      Prefix: ''
-      ACL: 'public-read'
-      CacheControl: 'no-cache'
-    getS3Params: (localFile, stat, callback) ->
-      if localFile in [ 'dist/show', 'dist/metadata' ]
-        callback(null, ContentType: 'text/html')
-      else
-        callback(null, {})
-  upload.on 'error', (err) ->
-    console.error("Unable to upload: ", err.stack)
-  upload.on 'fileUploadStart', (__, s3Key) ->
-    console.log("Uploading #{s3Key}")
-  upload.on('end', done)
+  childProcess.spawnSync('aws', [
+    's3', 'sync',
+    "#{__dirname}/dist/fonts",
+    "s3://#{process.env.S3_BUCKET}/fonts",
+    '--acl', 'public-read',
+  ])
+  childProcess.spawnSync('aws', [
+    's3', 'sync',
+    "#{__dirname}/dist/css",
+    "s3://#{process.env.S3_BUCKET}/css",
+    '--acl', 'public-read',
+  ])
+  childProcess.spawnSync('aws', [
+    's3', 'sync',
+    "#{__dirname}/dist/js",
+    "s3://#{process.env.S3_BUCKET}/js",
+    '--acl', 'public-read',
+  ])
+  childProcess.spawnSync('aws', [
+    's3', 'cp',
+    "#{__dirname}/dist/show",
+    "s3://#{process.env.S3_BUCKET}/show",
+    '--acl', 'public-read',
+    '--content-type', 'text/html; charset=utf-8',
+  ])
+  childProcess.spawnSync('aws', [
+    's3', 'cp',
+    "#{__dirname}/dist/metadata",
+    "s3://#{process.env.S3_BUCKET}/metadata",
+    '--acl', 'public-read',
+    '--content-type', 'text/plain; charset=utf-8',
+  ])
+
+  done()
 
 startBrowserify = (watch) ->
-  options =
-    cache: {}
-    packageCache: {}
-    fullPaths: true
-    entries: [ './js/main.coffee' ]
-    extensions: [ '.coffee', '.js', '.json', '.jade' ]
-    debug: true # enable source maps
+  (done) ->
+    options =
+      cache: {}
+      packageCache: {}
+      fullPaths: true
+      extensions: [ '.coffee', '.js', '.json', '.jade' ]
+      debug: true # enable source maps
 
-  bundler = browserify(options)
-  bundler.transform('coffeeify')
-  bundler.transform(browserifyJade.jade({
-    pretty: false
-  }))
+    bundler = browserify(options)
+    bundler.transform('coffeeify')
+    bundler.transform(pugify.pug({
+      pretty: false
+    }))
+    bundler.transform('uglifyify', global: true)
 
-  rebundle = ->
-    bundler.bundle()
-      .on('error', (e) -> gutil.log('Browserify error:', e.message))
-      .pipe(source('main.js'))
-      .pipe(gulp.dest('dist/js'))
+    rebundle = (done) ->
+      fs.mkdir "#{__dirname}/dist", (err) =>
+        return done(err) if err && err.code != 'EEXIST'
 
-  if watch
-    bundler = watchify(bundler)
-    bundler.on('update', rebundle)
-  else
-    bundler.plugin 'minifyify',
-      map: 'main.js.map.json'
-      compressPath: process.cwd()
-      output: 'dist/js/main.js.map.json'
+        fs.mkdir "#{__dirname}/dist/js", (err) =>
+          return done(err) if err && err.code != 'EEXIST'
 
-  rebundle()
+          returned = false
+
+          bundler
+            .require(require.resolve('./js/main.coffee'), entry: true)
+            .bundle()
+            .pipe(plumber())
+            .pipe(exorcist("#{__dirname}/dist/js/main.js.map", '/js/main.js.map'))
+            .pipe(fs.createWriteStream("#{__dirname}/dist/js/main.js"))
+            .on 'error', (err) ->
+              done(err) if !returned
+              returned = true
+            .on 'finish', () ->
+              done(null) if !returned
+
+    if watch
+      bundler = watchify(bundler)
+      bundler.on('update', rebundle)
+      rebundle() # and never call done()
+    else
+      rebundle(done)
 
 # All files go in dist/
 gulp.task 'clean', ->
@@ -83,8 +111,8 @@ gulp.task 'watch-css', [ 'css' ], ->
   gulp.watch('css/**/*', [ 'css-noclean' ])
 
 # ./js/**/*.(coffee|js) -> ./dist/app.js
-gulp.task('js', [ 'clean' ], -> startBrowserify(false))
-gulp.task('watch-js', [ 'clean' ], -> startBrowserify(true))
+gulp.task('js', [ 'clean' ], startBrowserify(false))
+gulp.task('watch-js', [ 'clean' ], startBrowserify(true))
 
 # ./public/**/* -> ./dist/**/*
 doPublic = ->
@@ -113,7 +141,7 @@ gulp.task 'watch', [ 'watch-css', 'watch-js', 'watch-jade', 'watch-public' ], ->
 
 gulp.task 'server', ->
   supervisor("server.js", {
-    watch: [ 'app' ]
+    watch: [ 'server.js' ]
     extensions: [ 'coffee', 'js', 'jade' ]
   })
 
@@ -123,3 +151,5 @@ gulp.task 'prod', [ 'css', 'js', 'jade', 'public' ]
 
 gulp.task 'deploy', [ 'prod' ], (done) ->
   uploadToAws(done)
+
+process.on('SIGINT', () => process.exit(0)) # so user can always Ctrl+C

@@ -79,10 +79,10 @@ module.exports = class App extends Backbone.View
     window.parent.postMessage({
       call: 'setDocumentListParams'
       args: [ { q: query } ]
-    }, global.server)
+    }, @searches.server)
 
     @searches.forEach((model) -> model.set(selected: model == search))
 
-  _onAddFilter: (view, search) -> @searchList.addFilter(search)
-  _onRemoveFilter: (view, search) -> @searchList.removeFilter(search)
-  _onSelect: (view, search) -> @select(search)
+  _onAddFilter: (search) -> @searchList.addFilter(search)
+  _onRemoveFilter: (search) -> @searchList.removeFilter(search)
+  _onSelect: (search) -> @select(search)
