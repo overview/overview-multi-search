@@ -1,6 +1,6 @@
 {
   "name": "overview-multi-search",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Saves and organizes searches within an Overview document set",
   "scripts": {
     "dev": "node_modules/.bin/gulp server",
