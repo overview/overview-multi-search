@@ -8,5 +8,11 @@ set -e
 
 DIR="$(dirname "$0")"
 
-EXTRA_DOCKER_RUN_ARGS="-e S3_BUCKET=${S3_BUCKET} -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
-exec "$DIR"/in-docker gulp deploy
+BUILD_IMAGE=$(docker build -q --target=build "$DIR")
+exec docker run --rm -it \
+  -e S3_BUCKET="$S3_BUCKET" \
+  -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
+  -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
+  -e DEBUG='*' \
+  "$BUILD_IMAGE" \
+  node -e 'const InMemoryWebsite = require("in-memory-website"); const website = InMemoryWebsite.StaticWebsite.fromBuffer(fs.readFileSync("website.data")); InMemoryWebsite.S3Uploader.uploadWebsiteToBucket(website, process.env.S3_BUCKET, err => { if (err) throw err })'

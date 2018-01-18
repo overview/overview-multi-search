@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+DIR="$(dirname "$0")"
+
+echo "Opening http://localhost:3334 and running gulp..."
+
+# Use "sh" so we can Ctrl+C it
+EXTRA_DOCKER_RUN_ARGS="--publish 127.0.0.1:3334:80 --name overview-multi-search" \
+exec "$DIR"/in-docker sh -c 'set -ex; webpack --watch & while [ ! -f /app/website.data ]; do sleep 1; done; cat /app/website.data | in-memory-website-http-server & SERVER_PID=$!; inotifywait -e close_write,moved_to,create -m . | while read -r directory events filename; do if [ "$filename" = "website.data" ]; then kill -9 "$SERVER_PID"; wait "$SERVER_PID" || [ "137" = "$?" -o "127" = "$?" ]; cat /app/website.data | in-memory-website-http-server & SERVER_PID=$!; fi; done'

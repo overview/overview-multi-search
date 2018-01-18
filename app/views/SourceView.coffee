@@ -4,7 +4,7 @@ Backbone = require('backbone')
 module.exports = class SourceView extends Backbone.View
   className: 'source'
 
-  template: require('../templates/Source.jade')
+  template: require('../templates/Source')
 
   events:
     'submit form': 'onSubmit'

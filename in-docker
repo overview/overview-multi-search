@@ -12,15 +12,7 @@ IMAGE_ID="$(docker build -q "$DIR" --target=development)"
 
 exec docker run --rm -it \
   --network overviewserver_default \
-  --volume "$ABSDIR"/jade:/app/jade:ro \
-  --volume "$ABSDIR"/js:/app/js:ro \
+  --volume "$ABSDIR"/app:/app/app:ro \
   --volume "$ABSDIR"/test:/app/test:ro \
-  --volume "$ABSDIR"/css:/app/css:ro \
-  --volume "$ABSDIR"/gulpfile.js:/app/gulpfile.js:ro \
-  --volume "$ABSDIR"/gulpfile.coffee:/app/gulpfile.coffee:ro \
-  --volume "$ABSDIR"/public:/app/public:ro \
-  --volume "$ABSDIR"/server.js:/app/server.js:ro \
-  --volume "$ABSDIR"/karma.conf.js:/app/karma.conf.js:ro \
-  --volume "$ABSDIR"/package-lock.json:/app/package-lock.json:rw \
   $EXTRA_DOCKER_RUN_ARGS \
   $IMAGE_ID "$@"

@@ -1,5 +1,5 @@
 Backbone = require('backbone')
-SearchList = require('../../js/models/SearchList')
+SearchList = require('../../app/models/SearchList')
 
 describe 'models/SearchList', ->
   class Search extends Backbone.Model

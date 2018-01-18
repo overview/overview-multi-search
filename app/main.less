@@ -1,4 +1,4 @@
-@import './vendor/font-awesome/font-awesome.less';
+@import './vendor/font-awesome/variables.less';
 
 @brand-primary: #50ade5;
 @brand-primary-hover: #6ab9e9;
@@ -117,6 +117,14 @@
 }
 
 // Now, the app-specific stuff
+
+@font-face {
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./fonts/fontawesome-webfont.woff') format('woff');
+}
+
 html, body, #app, .main {
   position: absolute;
   top: 0;

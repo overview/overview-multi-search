@@ -1,5 +1,5 @@
 Backbone = require('backbone')
-Search = require('../../js/models/Search')
+Search = require('../../app/models/Search')
 
 describe 'Search', ->
   beforeEach ->

@@ -13,7 +13,7 @@ Running on a dev machine
 ------------------------
 
 1. Run [overview-server](https://github.com/overview/overview-server)'s `./dev`
-1.`Run `./gulp` in this directory, in a separate shell.
+1.`Run `./dev` in this directory, in a separate shell.
 1. In Overview (http://localhost:9000), create a plugin with url `https://localhost:3334` and Overview URL `http://overview-dev`.
 
 Then there are the tests:
