@@ -1,12 +1,8 @@
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const StaticWebsite = require('in-memory-website').StaticWebsite
-
-const extractLess = new ExtractTextPlugin({
-  filename: '[name].[contenthash].css',
-})
 
 function assetKeyToPath(assetKey) {
   return assetKey.replace(/\.html$/, '')
@@ -91,6 +87,7 @@ module.exports = {
   resolve: {
     extensions: [ '.js', '.coffee', '.pug' ],
   },
+  mode: 'production',
   module: {
     rules: [
       {
@@ -111,19 +108,19 @@ module.exports = {
         use: 'base64-inline-loader',
       },
       {
-        test: /\.(css|less)$/,
-        use: extractLess.extract({
-          use: [
-            { loader: 'css-loader', },
-            { loader: 'less-loader', },
-          ],
-          fallback: 'style-loader',
-        }),
+        test: /\.(css|scss)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
     ],
   },
   plugins: [
-    extractLess,
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),
     new HtmlWebpackPlugin({
       title: 'Entity Filter',
       filename: 'show.html',

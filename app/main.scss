@@ -1,24 +1,18 @@
-@import './vendor/font-awesome/variables.less';
+@import 'font-awesome/scss/_variables.scss';
 
-@brand-primary: #50ade5;
-@brand-primary-hover: #6ab9e9;
-@brand-danger: #d9534f;
-@input-bg: white;
-@input-border: #ccc;
-@input-border-focus: #66afe9;
-@input-color: #555;
-@gray-light: #777;
-@gray-lighter: #eee;
-@text-muted: @gray-light;
-@border-color: #efefef;
-@border-radius-base: 4px;
-@well-bg: #f7f7f7;
-
-.list-unstyled() {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+$brand-primary: #50ade5;
+$brand-primary-hover: #6ab9e9;
+$brand-danger: #d9534f;
+$input-bg: white;
+$input-border: #ccc;
+$input-border-focus: #66afe9;
+$input-color: #555;
+$gray-light: #777;
+$gray-lighter: #eee;
+$text-muted: $gray-light;
+$border-color: #efefef;
+$border-radius-base: 4px;
+$well-bg: #f7f7f7;
 
 // A little bit of reset...
 * { font: inherit; }
@@ -36,14 +30,14 @@
   input, button {
     font: inherit;
     line-height: inherit;
-    border: 1px solid @input-border;
+    border: 1px solid $input-border;
   }
 
   input {
     position: relative; // rise above the button on focus
     padding: .5rem;
-    border-top-left-radius: @border-radius-base;
-    border-bottom-left-radius: @border-radius-base;
+    border-top-left-radius: $border-radius-base;
+    border-bottom-left-radius: $border-radius-base;
   }
 
   button {
@@ -51,23 +45,23 @@
   }
 
   .input-group-btn:last-child button {
-    border-top-right-radius: @border-radius-base;
-    border-bottom-right-radius: @border-radius-base;
+    border-top-right-radius: $border-radius-base;
+    border-bottom-right-radius: $border-radius-base;
   }
 }
 
 .form-control {
-  color: @input-color;
-  background: @input-bg;
-  border: 1px solid @input-border;
+  color: $input-color;
+  background: $input-bg;
+  border: 1px solid $input-border;
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 
   &:focus {
-    @color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
-    border-color: @input-border-focus;
+    $color-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6);
+    border-color: $input-border-focus;
     outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @color-rgba;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px $color-rgba;
     z-index: 2;
   }
 }
@@ -76,26 +70,26 @@
   background: white;
   cursor: pointer;
   padding: .5rem .75rem;
-  color: @input-color;
-  background: @input-bg;
-  border: 1px solid @input-border;
+  color: $input-color;
+  background: $input-bg;
+  border: 1px solid $input-border;
 
   &:focus {
-    @color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
-    border-color: @input-border-focus;
+    $color-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6);
+    border-color: $input-border-focus;
     outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @color-rgba;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px $color-rgba;
     z-index: 2;
   }
 }
 
 .btn-primary {
-  background: @brand-primary;
+  background: $brand-primary;
   color: white;
   text-shadow: 0 0 2px black;
 
   &:hover {
-    background: @brand-primary-hover;
+    background: $brand-primary-hover;
   }
 }
 
@@ -105,14 +99,14 @@
   }
 
   &>:first-child {
-    border-top-left-radius: @border-radius-base;
-    border-bottom-left-radius: @border-radius-base;
+    border-top-left-radius: $border-radius-base;
+    border-bottom-left-radius: $border-radius-base;
     border-left-width: 1px;
   }
 
   &>:last-child {
-    border-top-right-radius: @border-radius-base;
-    border-bottom-right-radius: @border-radius-base;
+    border-top-right-radius: $border-radius-base;
+    border-bottom-right-radius: $border-radius-base;
   }
 }
 
@@ -159,7 +153,7 @@ body {
 }
 
 a {
-  color: @brand-primary;
+  color: $brand-primary;
   text-decoration: none;
 }
 
@@ -171,7 +165,7 @@ a {
 }
 
 .search-list-filters-footer {
-  color: @text-muted;
+  color: $text-muted;
 }
 
 .filter-list {
@@ -196,14 +190,14 @@ a {
 
   .sort-asc::before {
     font-family: FontAwesome;
-    content: @fa-var-sort-desc;
+    content: $fa-var-sort-desc;
     padding-right: .25rem;
     display: none;
   }
 
   .sort-desc::before {
     font-family: FontAwesome;
-    content: @fa-var-sort-asc;
+    content: $fa-var-sort-asc;
     padding-right: .25rem;
     display: none;
   }
@@ -238,16 +232,18 @@ a {
 }
 
 ul.searches, ul.search-list-filters {
-  .list-unstyled();
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 ul.searches li.filter {
-  display: none;
+  display: none,
 }
 
 ul.search-list-filters:not(:empty) {
   border: 1px solid #ddd;
-  border-radius: @border-radius-base;
+  border-radius: $border-radius-base;
   background: #f5f5f5;
   padding: 0;
 }
@@ -258,17 +254,17 @@ li.search {
     cursor: pointer;
   }
 
-  border-top: 1px solid @border-color;
+  border-top: 1px solid $border-color;
 
   margin: 0;
   position: relative;
   z-index: 1; // so z-index -1 on action keeps us above the rest of the page
 
   &.selected {
-    background: @well-bg;
+    background: $well-bg;
 
     .when-not-editing {
-      background: @well-bg; // So z-index -1 goes behind this color
+      background: $well-bg; // So z-index -1 goes behind this color
     }
   }
 
@@ -278,13 +274,13 @@ li.search {
   .count {
     float: right;
     width: 20%;
-    color: @text-muted;
+    color: $text-muted;
     font-size: 1.2rem;
     padding-right: 1rem;
     text-align: right;
 
     &.error {
-      color: @brand-danger;
+      color: $brand-danger;
       font-weight: normal;
       font-size: .85rem;
     }
@@ -342,7 +338,7 @@ li.search .actions {
 }
 
 ul.searches li.search .actions {
-  border-left: 1px solid @border-color;
+  border-left: 1px solid $border-color;
   z-index: -1;
   border-radius: 6px;
   margin-top: -1px;
@@ -392,7 +388,7 @@ div.source {
   left: 0;
   width: 100%;
   height: 100%;
-  background: @well-bg;
+  background: $well-bg;
   z-index: 2; // put it over the input
 
   form {
@@ -443,7 +439,7 @@ div.source {
 .spinner > div {
   width: 18px;
   height: 18px;
-  background-color: @gray-lighter;
+  background-color: $gray-lighter;
 
   border-radius: 100%;
   display: inline-block;

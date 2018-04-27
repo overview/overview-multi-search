@@ -1,4 +1,4 @@
-require('./main.less') # compile style
+require('./main.scss') # compile style
 
 Backbone = require('backbone')
 $ = Backbone.$ = require('jquery')
