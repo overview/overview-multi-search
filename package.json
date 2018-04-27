@@ -1,6 +1,6 @@
 {
   "name": "overview-multi-search",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Saves and organizes searches within an Overview document set",
   "scripts": {
     "test": "node_modules/.bin/mocha"
